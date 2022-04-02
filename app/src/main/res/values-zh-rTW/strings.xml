@@ -144,7 +144,6 @@
     <string name="title_setup_gmail_password">我想要使用密碼來授權帳戶</string>
     <string name="title_setup_office_auth">“驗證失敗”錯誤可能是由系統管理員停用 IMAP/SMTP 所致</string>
     <string name="title_setup_oauth_rationale">授權存取您的 %1$s 帳戶</string>
-    <string name="title_setup_oauth_update">再次授權現有帳戶</string>
     <string name="title_setup_oauth_updated">帳戶授權已更新</string>
     <string name="title_setup_oauth_authorize">授權</string>
     <string name="title_setup_select_account">選擇帳戶</string>
@@ -169,14 +168,12 @@
     <string name="title_setup_permissions_explanation">需要聯絡人權限才能查詢聯絡人資料及建議聯絡人</string>
     <string name="title_setup_permission_import_contacts">如何匯入聯絡人</string>
     <string name="title_setup_doze">停用電池效能最佳化設定</string>
-    <string name="title_setup_doze_remark">為了穩定地接收及傳送電子郵件</string>
     <string name="title_setup_doze_explanation">請停用電池效能最佳化設定，以確保應用程式能可靠地在背景傳送和接收訊息</string>
     <string name="title_setup_doze_hint">雖然可能有點自相矛盾，但關閉此應用的電池效能最佳化設定可節省電池用量</string>
     <string name="title_setup_doze_instructions">在接下來的 Android 對話方塊中，將\"未套用最佳化設定\"更改為\"所有應用程式\"，選取本程式並選擇\"不要最佳化\"</string>
     <string name="title_setup_doze_battery">很耗電嗎？</string>
     <string name="title_setup_doze_stopped">不會同步？</string>
     <string name="title_setup_doze_device">此裝置可能需要這項設定</string>
-    <string name="title_setup_doze_12">訊息推送已停用</string>
     <string name="title_setup_alarm_12">程序將無法工作</string>
     <string name="title_setup_inexact">闹钟 &amp; 提醒權限已被停用</string>
     <string name="title_setup_background">背景活動限制已啟用</string>
@@ -249,6 +246,7 @@
     <string name="title_setup_reset_full">顯示原始訊息</string>
     <string name="title_setup_reset_images">顯示圖片</string>
     <string name="title_setup_reset_links">確認連結</string>
+    <string name="title_check_gmail_oauth">你的Gmail帳號將會在2022年5月30日後持續運作</string>
     <string name="title_advanced_hint_title">更高階的選項</string>
     <string name="title_advanced_hint_message">        您正在訪問更高階的選項。
         所有選項都有常用的標準值，除非您有不同的偏好，否則您不需要變更這些選項。
@@ -803,6 +801,8 @@
     <string name="title_delete_channel">刪除通知頻道</string>
     <string name="title_insert_contact">新增聯絡人</string>
     <string name="title_edit_contact">編輯聯絡人</string>
+    <string name="title_contact_email">電子郵件</string>
+    <string name="title_contact_name">名稱</string>
     <string name="title_import_contacts">匯入 vCard</string>
     <string name="title_export_contacts">匯出 vCard</string>
     <string name="title_create_sub_folder">建立子資料夾</string>
@@ -818,7 +818,6 @@
     <string name="title_delete_operation_flag">標記操作</string>
     <string name="title_delete_operation_delete">刪除操作</string>
     <string name="title_delete_operation_deleted">%1$d 操作已刪除</string>
-    <string name="title_delete_contacts">刪除所有本地聯絡人？</string>
     <string name="title_no_operations">無待處理操作</string>
     <string name="title_hint_operations">將操作刪除可能會使得訊息消失並導致同步問題</string>
     <string name="title_op_title_headers">下載標頭中</string>
@@ -977,7 +976,6 @@
     <string name="title_no_recorder">無適用的音頻錄製程式</string>
     <string name="title_no_camera">無適用的相機程式</string>
     <string name="title_no_saf">儲存空間存取架構不可用</string>
-    <string name="title_no_stream">過時的應用程式傳送了檔案路徑而非檔案流</string>
     <string name="title_no_internet">無網際網路連線或連線不合宜</string>
     <string name="title_no_connection">正在連線至一個或多個帳戶 &#8230;</string>
     <string name="title_no_folder">資料夾不存在</string>
@@ -1772,5 +1770,11 @@
         <item>中</item>
         <item>大</item>
         <item>超大</item>
+    </string-array>
+    <string-array name="contactTypes">
+        <item>接收者</item>
+        <item>寄件者</item>
+        <item>已封鎖</item>
+        <item>Not blocked</item>
     </string-array>
 </resources>

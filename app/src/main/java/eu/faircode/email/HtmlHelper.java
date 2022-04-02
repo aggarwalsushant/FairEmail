@@ -40,6 +40,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextDirectionHeuristics;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.AlignmentSpan;
 import android.text.style.BackgroundColorSpan;
@@ -107,7 +108,9 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URI;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.ParsePosition;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -653,6 +656,22 @@ public class HtmlHelper {
                 for (String key : keys) {
                     String value = kv.get(key);
                     switch (key) {
+                        case "background-image":
+                            // https://developer.mozilla.org/en-US/docs/Web/CSS/background-image
+                            String url = value.replace(" ", "");
+                            int us = url.indexOf("url(");
+                            int ue = url.indexOf(')', us + 4);
+                            if (us >= 0 && ue > us) {
+                                url = url.substring(us + 4, ue);
+                                if ((url.startsWith("'") && url.endsWith("'")) ||
+                                        (url.startsWith("\"") && url.endsWith("\"")))
+                                    url = url.substring(1, url.length() - 1);
+                                Element img = document.createElement("img")
+                                        .attr("src", url);
+                                element.prependElement("br");
+                                element.prependChild(img);
+                            }
+                            break;
                         case "color":
                         case "background":
                         case "background-color":
@@ -2015,6 +2034,7 @@ public class HtmlHelper {
 
     // https://tools.ietf.org/html/rfc3676
     static String flow(String text, boolean delsp) {
+        boolean inquote = false;
         boolean continuation = false;
         StringBuilder flowed = new StringBuilder();
         String[] lines = text.split("\\r?\\n");
@@ -2024,6 +2044,15 @@ public class HtmlHelper {
 
             if (delsp && line.endsWith(" "))
                 line = line.substring(0, line.length() - 1);
+
+            boolean q = line.startsWith(">");
+            if (q != inquote) {
+                int len = flowed.length();
+                if (len > 0 && flowed.charAt(len - 1) != '\n')
+                    flowed.append("\n");
+                continuation = false;
+            }
+            inquote = q;
 
             if (continuation)
                 while (line.startsWith(">")) {
@@ -2035,9 +2064,11 @@ public class HtmlHelper {
             continuation = (line.endsWith(" ") && !"-- ".equals(line));
 
             flowed.append(line);
+
             if (!continuation)
-                flowed.append("\r\n");
+                flowed.append("\n");
         }
+
         return flowed.toString();
     }
 
@@ -2384,8 +2415,7 @@ public class HtmlHelper {
         } catch (Throwable ex) {
             Log.e(new Throwable("getQuoteStyle " + start + "..." + end, ex));
         }
-
-        return "border-" + dir + ":3px solid #ccc; padding-" + dir + ":3px;margin-top:0; margin-bottom:0;";
+        return "border-" + dir + ":3px solid #ccc; padding-" + dir + ":10px;margin:0;";
     }
 
     static String getIndentStyle(CharSequence quoted, int start, int end) {
@@ -2632,25 +2662,41 @@ public class HtmlHelper {
             // https://datatracker.ietf.org/doc/html/rfc2821#section-4.4
             final DateFormat DTF = Helper.getDateTimeInstance(context, DateFormat.SHORT, DateFormat.MEDIUM);
 
+            MailDateFormat mdf = new MailDateFormat();
             ByteArrayInputStream bis = new ByteArrayInputStream(headers.getBytes());
-            String[] received = new InternetHeaders(bis).getHeader("Received");
+            InternetHeaders iheaders = new InternetHeaders(bis);
+
+            String dh = iheaders.getHeader("Date", null);
+            Date tx = null;
+            try {
+                if (dh != null)
+                    tx = mdf.parse(dh);
+            } catch (ParseException ex) {
+                Log.w(ex);
+            }
+
+            String[] received = iheaders.getHeader("Received");
             if (received != null && received.length > 0) {
                 for (int i = received.length - 1; i >= 0; i--) {
                     ssb.append('\n');
                     String h = MimeUtility.unfold(received[i]);
 
                     int semi = h.lastIndexOf(';');
-                    Date date = null;
+                    Date rx = null;
                     if (semi > 0) {
-                        MailDateFormat mdf = new MailDateFormat();
-                        date = mdf.parse(h, new ParsePosition(semi + 1));
+                        rx = mdf.parse(h, new ParsePosition(semi + 1));
                         h = h.substring(0, semi);
                     }
 
                     int s = ssb.length();
                     ssb.append('#').append(Integer.toString(received.length - i));
-                    if (date != null)
-                        ssb.append(' ').append(DTF.format(date));
+                    if (rx != null) {
+                        ssb.append(' ').append(DTF.format(rx));
+                        if (tx != null) {
+                            long ms = rx.getTime() - tx.getTime();
+                            ssb.append(" \u0394").append(DateUtils.formatElapsedTime(ms / 1000));
+                        }
+                    }
                     ssb.setSpan(new StyleSpan(Typeface.BOLD), s, ssb.length(), 0);
 
                     if (blocklist && i == received.length - 1) {
@@ -3444,6 +3490,12 @@ public class HtmlHelper {
                     Log.e("Invalid span " + start + "..." + end + " len=" + len + " type=" + span.getClass().getName());
             }
         }, document.body());
+
+        for (LineSpan line : ssb.getSpans(0, ssb.length(), LineSpan.class)) {
+            int end = ssb.getSpanEnd(line);
+            if (end < ssb.length() && ssb.charAt(end) != '\n')
+                ssb.insert(end, "\n");
+        }
 
         if (debug)
             for (int i = ssb.length() - 1; i >= 0; i--) {

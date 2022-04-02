@@ -4,11 +4,84 @@
 
 ### [Gobivenator](https://en.wikipedia.org/wiki/Gobivenator)
 
-### Next version
+### 1.1866 - 2022-04-02
 
-* Enabled [sqlite analyze](https://sqlite.org/lang_analyze.html)
-* Added [linear back-off scheme](https://github.com/M66B/FairEmail/blob/master/FAQ.md#user-content-faq123)
+* Small improvements and minor bug fixes
+* Updated translations
+
+### 1.1865 - 2022-04-01
+
+* Added searching in rule actions
+* Small improvements and minor bug fixes
+* Updated translations
+
+### 1.1864 - 2022-03-30
+
+* Fixed starting disabled accounts
+
+### 1.1863 - 2022-03-30
+
+* Converting background images into images (reformatted message view)
+* Small improvements and minor bug fixes
+* Updated translations
+
+### 1.1862 - 2022-03-28
+
+* Added local contact editor
+* Added local contact groups
+* Added block sender for POP3 accounts
+* Small improvements and minor bug fixes
+* Updated translations
+
+### 1.1861 - 2022-03-25
+
+* Added option to show account categories in the navigation menu
+* Added managing filter rules to the navigation menu
+* Small improvements and minor bug fixes
+* Updated AndroidX
+* Updated [Public Suffix List](https://publicsuffix.org/)
+* Updated translations
+
+### 1.1860 - 2022-03-23
+
+* Added sent sound selection
+* Small improvements and minor bug fixes
+* Updated translations
+
+### 1.1859 - 2022-03-22
+
+* Showing common filter rule action values in rule lists
+* Small improvements and minor bug fixes
+* Updated translations
+
+### 1.1858 - 2022-03-21
+
+* Added remove all attachments button to message editor
+* Showing filter rule condition values in rule lists
+* Small improvements and minor bug fixes
+* Updated translations
+
+### 1.1857 - 2022-03-19
+
+* Added inserting templates as text snippets
+* Small improvements and minor bug fixes
+* Updated translations
+
+### 1.1856 - 2022-03-14
+
+* Added click link feedback
+* Added option for direct server search
+* Improved favicon selection
+* Improved DMARC report viewer
+* Small improvements and minor bug fixes
+* Updated translations
+
+### 1.1855 - 2022-03-12
+
+* Added option to show contents of zipped attachments (enabled by default)
 * Added option to sort reply templates by frequency of use
+* Added basic [DMARC](https://en.wikipedia.org/wiki/DMARC) report viewer
+* Enabled [sqlite analyze](https://sqlite.org/lang_analyze.html)
 * Small improvements and minor bug fixes
 * Updated translations
 

@@ -111,7 +111,6 @@ import java.lang.reflect.Array;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
-import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
@@ -1588,14 +1587,6 @@ public class Log {
             if (ex instanceof ConnectionException)
                 return null;
 
-            if (ex instanceof MailConnectException &&
-                    ex.getCause() instanceof SocketTimeoutException)
-                ex = new Throwable("No response received from email server", ex);
-
-            if (ex instanceof MessagingException &&
-                    ex.getCause() instanceof UnknownHostException)
-                ex = new Throwable("Email server address lookup failed", ex);
-
             if (ex instanceof StoreClosedException ||
                     ex instanceof FolderClosedException ||
                     ex instanceof FolderClosedIOException ||
@@ -1608,6 +1599,14 @@ public class Log {
                             "This operation is not allowed on a closed folder".equals(ex.getMessage())))
                 return null;
         }
+
+        if (ex instanceof MailConnectException &&
+                ex.getCause() instanceof SocketTimeoutException)
+            ex = new Throwable("No response received from email server", ex);
+
+        if (ex instanceof MessagingException &&
+                ex.getCause() instanceof UnknownHostException)
+            ex = new Throwable("Email server address lookup failed", ex);
 
         StringBuilder sb = new StringBuilder();
         if (BuildConfig.DEBUG)
@@ -2056,6 +2055,7 @@ public class Log {
                 int pollInterval = ServiceSynchronize.getPollInterval(context);
                 boolean metered = prefs.getBoolean("metered", true);
                 Boolean ignoring = Helper.isIgnoringOptimizations(context);
+                boolean canSchedule = AlarmManagerCompatEx.canScheduleExactAlarms(context);
                 boolean auto_optimize = prefs.getBoolean("auto_optimize", false);
                 boolean schedule = prefs.getBoolean("schedule", false);
 
@@ -2069,12 +2069,14 @@ public class Log {
                         " vpn=" + vpn + (vpn ? " !!!" : "") +
                         " ng=" + ng + " tc=" + tc + "\r\n" +
                         "optimizing=" + (ignoring == null ? null : !ignoring) + (Boolean.FALSE.equals(ignoring) ? " !!!" : "") +
+                        " canSchedule=" + canSchedule + (canSchedule ? "" : " !!!") +
                         " auto_optimize=" + auto_optimize + (auto_optimize ? " !!!" : "") + "\r\n" +
                         "accounts=" + accounts.size() +
                         " folders=" + db.folder().countTotal() +
                         " messages=" + db.message().countTotal() +
                         " rules=" + db.rule().countTotal() +
-                        " operations=" + db.operation().getOperationCount() +
+                        " ops=" + db.operation().getOperationCount() +
+                        " outbox=" + db.message().countOutbox() +
                         "\r\n\r\n");
 
                 if (schedule) {
@@ -2135,6 +2137,17 @@ public class Log {
                                         " " + folder.state +
                                         (folder.last_sync == null ? "" : " " + dtf.format(folder.last_sync)) +
                                         "\r\n");
+                            }
+
+                        List<TupleAccountSwipes> swipes = db.account().getAccountSwipes(account.id);
+                        if (swipes == null)
+                            size += write(os, "<> swipes?\r\n");
+                        else
+                            for (TupleAccountSwipes swipe : swipes) {
+                                size += write(os, "> " + EntityMessage.getSwipeType(swipe.swipe_left) + " " +
+                                        swipe.left_name + ":" + swipe.left_type + "\r\n");
+                                size += write(os, "< " + EntityMessage.getSwipeType(swipe.swipe_right) + " " +
+                                        swipe.right_name + ":" + swipe.right_type + "\r\n");
                             }
 
                         size += write(os, "\r\n");
@@ -2717,7 +2730,7 @@ public class Log {
         attachment.id = db.attachment().insertAttachment(attachment);
 
         MessageClassifier.save(context);
-        File source = MessageClassifier.getFile(context);
+        File source = MessageClassifier.getFile(context, false);
         File target = attachment.getFile(context);
         Helper.copy(source, target);
 

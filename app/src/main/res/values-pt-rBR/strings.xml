@@ -72,12 +72,16 @@
     </plurals>
     <string name="title_ask_spam_who">Tratar mensagem de %1$s como spam?</string>
     <string name="title_junk_hint">Seu provedor de e-mail é responsável por filtrar spam. Um aplicativo de e-mail não possui todos os dados necessários para fazer isso de forma confiável.</string>
+    <string name="title_junk_pop_hint">        Mensagens de remetentes bloqueados não irão ser baixadas.
+        Se \"Deixar mensagens no servidor\" não estiver habilitado, essas mensagens irão ser perdidas permanentemente!
+    </string>
     <string name="title_block">Bloquear %1$s</string>
     <string name="title_block_sender">Bloquear remetente</string>
     <string name="title_block_sender_domain">Bloquear domínio \'%1$s\'</string>
     <string name="title_block_sender_hint">        Bloquear o remetente é um recurso grátis.
         Bloquear o domínio do remetente usa regras de filtro, que trata-se de uma opção Pro.
     </string>
+    <string name="title_blocked_senders">Remetentes bloqueados</string>
     <string name="title_junk_filter">Usar filtro de spam local</string>
     <string name="title_junk_filter_hint">Isso pode aumentar o uso de bateria e incorretamente marcar mensagens como spam</string>
     <string name="title_junk_blocklist">Usar listas de bloqueio por spam</string>
@@ -155,7 +159,7 @@
     <string name="title_setup_gmail_password">Quero autorizar uma conta com uma senha</string>
     <string name="title_setup_office_auth">O erro \'Falha de Autenticação\' pode ser causadado por desativação do IMAP/SMTP pelo administrador do sistema</string>
     <string name="title_setup_oauth_rationale">Autorizar acesso à sua conta %1$s</string>
-    <string name="title_setup_oauth_update">Autorizar conta existente novamente</string>
+    <string name="title_setup_oauth_update">Autorizar uma conta existente novamente (caso contrário, crie uma nova conta)</string>
     <string name="title_setup_oauth_updated">Autorização da conta foi atualizada</string>
     <string name="title_setup_oauth_authorize">Autorizar</string>
     <string name="title_setup_select_account">Selecionar conta</string>
@@ -180,14 +184,13 @@
     <string name="title_setup_permissions_explanation">Permissões de contato são exigidas para procurar por informações de contato e para sugerir contatos</string>
     <string name="title_setup_permission_import_contacts">Como posso importar os contatos?</string>
     <string name="title_setup_doze">Desativar otimizações de bateria</string>
-    <string name="title_setup_doze_remark">Para enviar e receber e-mails corretamente</string>
+    <string name="title_setup_doze_remark">Para enviar e receber email de forma confiável em segundo plano</string>
     <string name="title_setup_doze_explanation">As otimizações de bateria devem estar desativadas para que seja garantido o envio e recebimento de mensagens em segundo plano</string>
     <string name="title_setup_doze_hint">Embora isto possa parecer contraditório, a desativação das otimizações de bateria para este aplicativo resultará em menos uso de bateria</string>
     <string name="title_setup_doze_instructions">Na próxima caixa de diálogo do Android altere \"Não otimizado\" para \"Todos os aplicativos\", selecione este app e confirme \"Não otimizar\"</string>
     <string name="title_setup_doze_battery">Alto uso de bateria?</string>
     <string name="title_setup_doze_stopped">A sincronização parou?</string>
     <string name="title_setup_doze_device">Isto é provavelmente exigido para este dispositivo</string>
-    <string name="title_setup_doze_12">Mensagens PUSH estão desabilitadas</string>
     <string name="title_setup_alarm_12">O app não funcionará</string>
     <string name="title_setup_inexact">Alarmes &amp; os lembretes estão desativados</string>
     <string name="title_setup_background">Restrições de fundo estão habilitadas</string>
@@ -264,6 +267,8 @@
     <string name="title_setup_reset_full">Mostrar mensagens originais</string>
     <string name="title_setup_reset_images">Mostrar Imagens</string>
     <string name="title_setup_reset_links">Confirmar links</string>
+    <string name="title_check_gmail_oauth">Suas contas de Gmail continuarão funcionando após 30 de maio de 2022</string>
+    <string name="title_check_gmail_password">Algumas de suas contas de Gmail podem parar de funcionar após 30 de maio de 2022</string>
     <string name="title_advanced_hint_title">Opções mais avançadas</string>
     <string name="title_advanced_hint_message">        Você está navegando para as opções mais avançadas.        Todas as opções têm comumente usados valores padrão, que você não precisa mudar a menos que você tenha uma preferência diferente.
     </string>
@@ -372,6 +377,7 @@
     <string name="title_advanced_close_pane">Recolher linha ou coluna ao fechar uma conversa</string>
     <string name="title_advanced_column_width">Largura da coluna da mensagem: %1$s %%</string>
     <string name="title_advanced_nav_options">Mostrar opções de menu de navegação</string>
+    <string name="title_advanced_nav_categories">Mostrar categorias de conta no menu de navegação</string>
     <string name="title_advanced_nav_pin">Fixar menu de navegação</string>
     <string name="title_advanced_nav_hide_title">Ocultar opções do menu de navegação?</string>
     <string name="title_advanced_nav_hide_message">Você pode reativar as opções nas configurações de exibição</string>
@@ -430,6 +436,7 @@
     <string name="title_advanced_preview_italic">Mostrar visualização de mensagem em itálicos</string>
     <string name="title_advanced_preview_lines">Número de linhas de visualização</string>
     <string name="title_advanced_addresses">Mostrar detalhes do endereço por padrão</string>
+    <string name="title_advanced_unzip">Mostrar conteúdo de anexos compactados</string>
     <string name="title_advanced_attachments_alt">Mostrar anexos após o texto da mensagem</string>
     <string name="title_advanced_thumbnails">Mostrar miniaturas das imagens após o texto da mensagem</string>
     <string name="title_advanced_message_text_zoom2">Zoom padrão da mensagem: %1$s %%</string>
@@ -576,6 +583,7 @@
     </string>
     <string name="title_advanced_power_menu">Adicionar ações ao menu de energia do Android</string>
     <string name="title_advanced_external_search">Permitir que outros aplicativos pesquisem nas mensagens</string>
+    <string name="title_advanced_sort_answers">Ordenar modelos de resposta por frequência de uso</string>
     <string name="title_advanced_shortcuts">Mostrar contatos usados com frequência no menu de compartilhamento do Android</string>
     <string name="title_advanced_fts">Construir índice de busca</string>
     <string name="title_advanced_fts_indexed">%1$d / %2$d mensagens indexadas (%3$s)</string>
@@ -655,6 +663,7 @@
     <string name="title_advanced_monospaced_pre_hint">Mensagens simples de texto serão consideradas pré-formatadas</string>
     <string name="title_advanced_placeholders_hint">Isso se aplica apenas a mensagens reformatadas</string>
     <string name="title_advanced_inline_hint">Imagens em linha são incluídas na mensagem</string>
+    <string name="compressed">O conteúdo de arquivos compactados (%1$s) com mais de %2$s arquivos ou com arquivos maiores que %3$s não serão ser exibidos</string>
     <string name="title_advanced_parse_classes_hint">Isto irá exibir mensagens com mais precisão, mas possivelmente com um atraso</string>
     <string name="title_advanced_language_detection_hint">O suporte à detecção do idioma depende do fabricante do dispositivo</string>
     <string name="title_advanced_autoexpand_hint">Abrir automaticamente a mensagem quando há apenas uma mensagem ou uma mensagem não-lida em uma conversa</string>
@@ -840,6 +849,9 @@
     <string name="title_delete_channel">Excluir canal de notificação</string>
     <string name="title_insert_contact">Adicionar contato</string>
     <string name="title_edit_contact">Editar contato</string>
+    <string name="title_contact_email">E-mail</string>
+    <string name="title_contact_name">Nome</string>
+    <string name="title_contact_group">Grupo</string>
     <string name="title_import_contacts">Importar vCards</string>
     <string name="title_export_contacts">Exportar vCards</string>
     <string name="title_create_sub_folder">Criar subpasta</string>
@@ -855,7 +867,7 @@
     <string name="title_delete_operation_flag">Marcar operações</string>
     <string name="title_delete_operation_delete">Excluir operações</string>
     <string name="title_delete_operation_deleted">%1$d operações excluídas</string>
-    <string name="title_delete_contacts">Excluir todos os contatos locais?</string>
+    <string name="title_delete_contacts">Excluir contatos locais visíveis?</string>
     <string name="title_no_operations">Nenhuma operação pendente</string>
     <string name="title_check_operations">Checando operações</string>
     <string name="title_hint_operations">Excluir operações pode resultar no desaparecimento de mensagens e problemas de sincronização</string>
@@ -966,6 +978,7 @@
     <string name="title_eml_remark">Para encaminhar mensagens, as mensagens brutas (originais) precisam ser baixadas do servidor de e-mail. Isso requer uma conexão com a internet e as mensagens ainda devem ser armazenadas no servidor de e-mail.</string>
     <string name="title_eml_option">Isso pode ser impedido ao ativar sempre baixar arquivos de mensagens brutas nas configurações de conexão</string>
     <string name="title_eml_downloaded">Mensagens não baixadas: %1$s</string>
+    <string name="title_auto_confirm" comment="title_auto_confirm&#10;Option title for checkbox to auto close (confirm) dialogs.">Confirmar automaticamente após alguns segundos</string>
     <string name="title_buttons">Selecionar botões</string>
     <string name="title_buttons_hint">As ações disponíveis dependem do tipo de conta e configuração</string>
     <string name="title_button_search">Buscar nas mensagens</string>
@@ -1014,7 +1027,8 @@
     <string name="title_no_recorder">Nenhum aplicativo de gravador de áudio adequado disponível</string>
     <string name="title_no_camera">Nenhum aplicativo de câmera adequado disponível</string>
     <string name="title_no_saf">Storage access framework não disponivel</string>
-    <string name="title_no_stream">Um aplicativo desatualizado enviou um caminho de arquivo em vez de um fluxo de arquivo</string>
+    <string name="title_no_stream">O FairEmail não tem permissão para ler este arquivo diretamente</string>
+    <string name="title_no_stream_help">Isso pode ser resolvido selecionando o arquivo com um aplicativo de gerenciamento de arquivos mais moderno ou concedendo permissão para ler arquivos</string>
     <string name="title_no_internet">Não ou nenhuma conexão de internet adequada</string>
     <string name="title_no_connection">Conectando-se a uma ou mais contas &#8230;</string>
     <string name="title_no_folder">A pasta não existe</string>
@@ -1040,6 +1054,7 @@
     <string name="title_ask_delete_accept">Entendo que deletar mensagens permanentemente é irreversível</string>
     <string name="title_ask_delete_answer">Excluir modelo de resposta permanentemente?</string>
     <string name="title_ask_delete_rule">Excluir regra permanentemente?</string>
+    <string name="title_ask_delete_attachments">Remover todos os anexos?</string>
     <string name="title_ask_discard">Descartar rascunho?</string>
     <string name="title_ask_show_html">Mostrar a mensagem original pode vazar informações confidenciais de privacidade</string>
     <string name="title_ask_show_html_remark">Não é possível exibir a mensagem original com um fundo escuro porque textos e imagens escuros podem ficar invisíveis</string>
@@ -1242,6 +1257,7 @@
     <string name="title_search_in_junk">Nos spam</string>
     <string name="title_search_with_before">Antes de</string>
     <string name="title_search_with_after">Após</string>
+    <string name="title_search_device_first">Pesquisar no dispositivo primeiro</string>
     <string name="title_search_flag_unseen">não lido</string>
     <string name="title_search_flag_flagged">marcado</string>
     <string name="title_search_flag_hidden">oculto</string>
@@ -1253,6 +1269,7 @@
     <string name="title_search_device">Pesquisar no dispositivo</string>
     <string name="title_search_server">Pesquisar no servidor</string>
     <string name="title_search_in">Procurar em</string>
+    <string name="title_search_delete">Excluir a pesquisa salva?</string>
     <string name="title_sort_on">Ordenar por</string>
     <string name="title_sort_on_time">Data</string>
     <string name="title_sort_on_unread">Não lida</string>
@@ -1298,6 +1315,7 @@
     <string name="title_answer_group">Grupo de modelo (opcional)</string>
     <string name="title_answer_standard">Padrão</string>
     <string name="title_answer_favorite">Favorito</string>
+    <string name="title_answer_snippet">Fragmento</string>
     <string name="title_answer_receipt">Enviar confirmação de leitura</string>
     <string name="title_answer_hide">Ocultar dos menus</string>
     <string name="title_answer_text">Texto do modelo</string>
@@ -1825,5 +1843,11 @@
         <item>Médio</item>
         <item>Grande</item>
         <item>Muito grande</item>
+    </string-array>
+    <string-array name="contactTypes">
+        <item>Destinatário</item>
+        <item>Remetente</item>
+        <item>Bloqueado</item>
+        <item>Não bloqueado</item>
     </string-array>
 </resources>

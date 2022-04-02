@@ -72,11 +72,15 @@
     </plurals>
     <string name="title_ask_spam_who">Nachricht von %1$s als Spam behandeln?</string>
     <string name="title_junk_hint">Ihr E-Mail-Anbieter ist für das Filtern von Spam zuständig. Eine E-Mail-Anwendung verfügt nicht über alle benötigten Informationen, um das zuverlässig zu gewährleisten.</string>
+    <string name="title_junk_pop_hint">        Nachrichten von gesperrten Absendern werden nicht heruntergeladen.
+        Wenn „Nachrichten auf dem Server belassen” deaktiviert ist, gehen diese Nachrichten dauerhaft verloren!
+    </string>
     <string name="title_block">%1$s sperren</string>
     <string name="title_block_sender">Absender sperren</string>
     <string name="title_block_sender_domain">Domain „%1$s” sperren</string>
     <string name="title_block_sender_hint">        Das Sperren eines Absenders ist eine kostenlose Funktion.        Das Sperren der Domain eines Absenders verwendet Filterregeln, welche nur in der Pro-Version verfügbar sind.
     </string>
+    <string name="title_blocked_senders">Gesperrte Absender</string>
     <string name="title_junk_filter">Lokalen Spam-Filter verwenden</string>
     <string name="title_junk_filter_hint">Das kann den Akkuverbrauch erhöhen und Nachrichten fälschlicherweise als Spam kennzeichnen</string>
     <string name="title_junk_blocklist">Spam-Sperrlisten verwenden</string>
@@ -154,7 +158,7 @@
     <string name="title_setup_gmail_password">Ich möchte ein Konto mit einem Passwort autorisieren</string>
     <string name="title_setup_office_auth">Der Fehler »AUTHENTICATE failed« kann dadurch verursacht werden, dass IMAP/SMTP vom Systemverwalter deaktiviert wurde</string>
     <string name="title_setup_oauth_rationale">Zugriff auf Ihr %1$s -Konto autorisieren</string>
-    <string name="title_setup_oauth_update">Vorhandenes Konto erneut autorisieren</string>
+    <string name="title_setup_oauth_update">Ein bestehendes Konto erneut autorisieren (oder ein neues Konto erstellen)</string>
     <string name="title_setup_oauth_updated">Kontoautorisierung wurde aktualisiert</string>
     <string name="title_setup_oauth_authorize">Autorisieren</string>
     <string name="title_setup_select_account">Konto wählen</string>
@@ -179,14 +183,13 @@
     <string name="title_setup_permissions_explanation">Der Zugriff auf Kontakte ist erforderlich, um Kontaktinformationen nachzuschlagen und Kontakte vorzuschlagen</string>
     <string name="title_setup_permission_import_contacts">Wie kann ich Kontakte importieren?</string>
     <string name="title_setup_doze">Akkuoptimierung deaktivieren</string>
-    <string name="title_setup_doze_remark">Um Nachrichten zuverlässig zu senden und zu empfangen</string>
-    <string name="title_setup_doze_explanation">Batterieoptimierungen sollten für die App deaktiviert werden, um ein zuverlässiges Senden und Empfangen von Nachrichten im Hintergrund zu gewährleisten</string>
+    <string name="title_setup_doze_remark">Um E-Mail verlässlich im Hintergrund zu senden und zu empfangen</string>
+    <string name="title_setup_doze_explanation">Akkuoptimierungen sollten für die App deaktiviert werden, um ein zuverlässiges Senden und Empfangen von Nachrichten im Hintergrund zu gewährleisten</string>
     <string name="title_setup_doze_hint">Obwohl dies widersprüchlich klingen mag, führt das Deaktivieren der Akku-Optimierungen für diese App zu einem geringeren Akkuverbrauch</string>
     <string name="title_setup_doze_instructions">Im nächsten Android-Dialog bitte »Nicht optimiert« in »Alle Apps« ändern und bei FairEmail »Nicht optimieren« auswählen</string>
     <string name="title_setup_doze_battery">Hoher Akkuverbrauch?</string>
     <string name="title_setup_doze_stopped">Synchronisation angehalten?</string>
     <string name="title_setup_doze_device">Dies ist möglicherweise für dieses Gerät erforderlich</string>
-    <string name="title_setup_doze_12">Push-Nachrichten sind deaktiviert</string>
     <string name="title_setup_alarm_12">Die App funktioniert nicht</string>
     <string name="title_setup_inexact">Benachrichtigungen und Erinnerungen sind deaktiviert</string>
     <string name="title_setup_background">Hintergrundbeschränkungen sind aktiviert</string>
@@ -263,6 +266,8 @@
     <string name="title_setup_reset_full">Originalnachrichten anzeigen</string>
     <string name="title_setup_reset_images">Bilder anzeigen</string>
     <string name="title_setup_reset_links">Links bestätigen</string>
+    <string name="title_check_gmail_oauth">Ihre Google-Mail-Konten werden nach dem 30. Mai 2022 weiterhin funktionieren</string>
+    <string name="title_check_gmail_password">Einige Ihrer Google-Mail-Konten funktionieren möglicherweise nicht mehr nach dem 30. Mai 2022</string>
     <string name="title_advanced_hint_title">Erweiterte Optionen</string>
     <string name="title_advanced_hint_message">        Sie wechseln zu den erweiterten Optionen.        Alle Optionen haben allgemein verwendete Standardwerte, die nur geändert werden sollten, wenn Sie andere Einstellungen bevorzugen.
     </string>
@@ -371,6 +376,7 @@
     <string name="title_advanced_close_pane">Zeile oder Spalte beim Schließen einer Unterhaltung einklappen</string>
     <string name="title_advanced_column_width">Breite der Nachrichtenspalte: %1$s %%</string>
     <string name="title_advanced_nav_options">Navigationsmenü-Optionen anzeigen</string>
+    <string name="title_advanced_nav_categories">Kontokategorien im Navigationsmenü anzeigen</string>
     <string name="title_advanced_nav_pin">Navigationsmenü anheften</string>
     <string name="title_advanced_nav_hide_title">Navigationsmenü-Optionen ausblenden?</string>
     <string name="title_advanced_nav_hide_message">Sie können die Optionen in den Darstellungseinstellungen wieder aktivieren</string>
@@ -429,6 +435,7 @@
     <string name="title_advanced_preview_italic">Nachrichtenvorschau kursiv anzeigen</string>
     <string name="title_advanced_preview_lines">Anzahl der Vorschauzeilen</string>
     <string name="title_advanced_addresses">Adressdetails standardmäßig anzeigen</string>
+    <string name="title_advanced_unzip">Inhalt von komprimierten Anhängen anzeigen</string>
     <string name="title_advanced_attachments_alt">Anhänge nach (statt vor) dem Nachrichtentext anzeigen</string>
     <string name="title_advanced_thumbnails">Vorschaubilder nach dem Nachrichtentext anzeigen</string>
     <string name="title_advanced_message_text_zoom2">Standard der Nachrichtentextvergrößerung: %1$s %%</string>
@@ -575,6 +582,7 @@
     </string>
     <string name="title_advanced_power_menu">Aktionen zum Android-Ein/Aus-Menü hinzufügen</string>
     <string name="title_advanced_external_search">Anderen Apps erlauben in Nachrichten zu suchen</string>
+    <string name="title_advanced_sort_answers">Antwortvorlagen nach Nutzungsfrequenz sortieren</string>
     <string name="title_advanced_shortcuts">Häufig verwendete Kontakte im Android-Teilen-Menü anzeigen</string>
     <string name="title_advanced_fts">Suchindex erstellen</string>
     <string name="title_advanced_fts_indexed">%1$d / %2$d Nachrichten indiziert (%3$s)</string>
@@ -654,6 +662,7 @@
     <string name="title_advanced_monospaced_pre_hint">Reintext-Nachrichten werden als vorformatiert betrachtet</string>
     <string name="title_advanced_placeholders_hint">Das gilt nur für umformatierte Nachrichten</string>
     <string name="title_advanced_inline_hint">Eingebettete Grafiken sind Grafiken, die innerhalb der Nachricht enthalten sind</string>
+    <string name="compressed">Der Inhalt von komprimierten Dateien (%1$s) mit mehr als %2$s Dateien oder mit Dateien größer als %3$s wird nicht angezeigt</string>
     <string name="title_advanced_parse_classes_hint">Dies wird die Nachrichten genauer anzeigen, aber möglicherweise mit einer Verzögerung</string>
     <string name="title_advanced_language_detection_hint">Die Unterstützung der Sprachenerkennung hängt vom Gerätehersteller ab</string>
     <string name="title_advanced_autoexpand_hint">Nachricht automatisch öffnen, wenn nur eine gelesene/ungelesene Nachricht in einer Unterhaltung enthalten ist</string>
@@ -839,6 +848,9 @@
     <string name="title_delete_channel">Benachrichtigungskanal löschen</string>
     <string name="title_insert_contact">Kontakt hinzufügen</string>
     <string name="title_edit_contact">Kontakt bearbeiten</string>
+    <string name="title_contact_email">Neue E-Mail</string>
+    <string name="title_contact_name">Name</string>
+    <string name="title_contact_group">Gruppe</string>
     <string name="title_import_contacts">vCards importieren</string>
     <string name="title_export_contacts">vCards exportieren</string>
     <string name="title_create_sub_folder">Unterordner erstellen</string>
@@ -854,7 +866,7 @@
     <string name="title_delete_operation_flag">Kennzeichnungs-Vorgänge</string>
     <string name="title_delete_operation_delete">Lösch-Vorgänge</string>
     <string name="title_delete_operation_deleted">%1$d Vorgänge gelöscht</string>
-    <string name="title_delete_contacts">Alle lokale Kontakte löschen?</string>
+    <string name="title_delete_contacts">Sichtbare lokale Kontakte löschen?</string>
     <string name="title_no_operations">Keine weiteren Vorgänge</string>
     <string name="title_check_operations">Auf Vorgänge wird geprüft</string>
     <string name="title_hint_operations">Das Löschen von Vorgängen kann zum Verschwinden von Meldungen und zu Synchronisationsproblemen führen</string>
@@ -964,6 +976,7 @@
     <string name="title_eml_remark">Um Nachrichten weiterzuleiten, müssen die ursprünglichen Nachrichten vom E-Mail-Server heruntergeladen werden. Dazu ist eine Internetverbindung erforderlich und die Nachrichten müssen noch auf dem E-Mail-Server verfügbar sein.</string>
     <string name="title_eml_option">Das kann verhindert werden, indem in den Verbindungseinstellungen „Rohnachrichtendateien herunterladen“ eingeschaltet wird</string>
     <string name="title_eml_downloaded">Rohnachrichten heruntergeladen: %1$s</string>
+    <string name="title_auto_confirm" comment="title_auto_confirm&#10;Option title for checkbox to auto close (confirm) dialogs.">Nach ein paar Sekunden automatisch bestätigen</string>
     <string name="title_buttons">Schaltflächen auswählen</string>
     <string name="title_buttons_hint">Die aktuell möglichen Aktionen hängen vom Kontotyp und der Konfiguration ab</string>
     <string name="title_button_search">In Nachrichten suchen</string>
@@ -1012,7 +1025,8 @@
     <string name="title_no_recorder">Keine geeignete App zur Audioaufnahme verfügbar</string>
     <string name="title_no_camera">Keine passende Kamera-App verfügbar</string>
     <string name="title_no_saf">Storage Access Framework nicht verfügbar</string>
-    <string name="title_no_stream">Eine veraltete App verschickte den Dateinamen anstelle des Datenstroms</string>
+    <string name="title_no_stream">FairEmail hat keine Berechtigung diese Datei direkt zu lesen</string>
+    <string name="title_no_stream_help">Das kann gelöst werden, indem man die Datei mit einer moderneren Dateiverwaltungs-App auswählt oder FairEmail die Berechtigung zum Lesen von Dateien erteilt.</string>
     <string name="title_no_internet">Keine oder keine passende Internetverbindung</string>
     <string name="title_no_connection">Zu einem oder mehreren Konten wird verbunden &#8230;</string>
     <string name="title_no_folder">Ordner nicht vorhanden</string>
@@ -1038,6 +1052,7 @@
     <string name="title_ask_delete_accept">Ich verstehe, dass das Löschen von Nachrichten unwiderruflich ist</string>
     <string name="title_ask_delete_answer">Antwortvorlage dauerhaft löschen?</string>
     <string name="title_ask_delete_rule">Regel dauerhaft löschen?</string>
+    <string name="title_ask_delete_attachments">Alle Anhänge entfernen?</string>
     <string name="title_ask_discard">Entwurf löschen?</string>
     <string name="title_ask_show_html">Das Anzeigen der originalen Nachricht kann vertrauliche Daten preisgeben</string>
     <string name="title_ask_show_html_remark">Das Anzeigen der Originalnachricht mit dunklem Hintergrund ist nicht möglich, da dadurch dunkle Texte und Bilder nicht sichtbar wären</string>
@@ -1240,6 +1255,7 @@
     <string name="title_search_in_junk">Im Spam-Ordner</string>
     <string name="title_search_with_before">Vor</string>
     <string name="title_search_with_after">Nach</string>
+    <string name="title_search_device_first">Zuerst auf dem Gerät suchen</string>
     <string name="title_search_flag_unseen">Ungelesen</string>
     <string name="title_search_flag_flagged">markiert</string>
     <string name="title_search_flag_hidden">Ausgeblendet</string>
@@ -1251,6 +1267,7 @@
     <string name="title_search_device">Gerät durchsuchen</string>
     <string name="title_search_server">Auf dem Server suchen</string>
     <string name="title_search_in">Suchen in</string>
+    <string name="title_search_delete">Gespeicherte Suchanfragen löschen?</string>
     <string name="title_sort_on">Sortieren nach</string>
     <string name="title_sort_on_time">Datum/Uhrzeit</string>
     <string name="title_sort_on_unread">Ungelesen</string>
@@ -1296,6 +1313,7 @@
     <string name="title_answer_group">Vorlagengruppe (optional)</string>
     <string name="title_answer_standard">Standard</string>
     <string name="title_answer_favorite">Favorit</string>
+    <string name="title_answer_snippet">Textbaustein</string>
     <string name="title_answer_receipt">Als Lesebestätigung verwenden</string>
     <string name="title_answer_hide">Aus Menüs ausblenden</string>
     <string name="title_answer_text">Vorlagentext</string>
@@ -1823,5 +1841,11 @@ Zur Erinnerung daran zeigt FairEmail einen kleinen Hinweis an, dieser verschwind
         <item>Mittel</item>
         <item>Groß</item>
         <item>Sehr groß</item>
+    </string-array>
+    <string-array name="contactTypes">
+        <item>Empfänger</item>
+        <item>Absender</item>
+        <item>Blockiert</item>
+        <item>Nicht blockiert</item>
     </string-array>
 </resources>

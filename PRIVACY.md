@@ -38,10 +38,10 @@ if [Brand Indicators for Message Identification](https://en.wikipedia.org/wiki/B
 or [favicons](https://en.wikipedia.org/wiki/Favicon)
 are explicitly enabled (off by default).
 
-FairEmail obvously **will access** the configured email servers.
+FairEmail obviously **will access** the configured email servers.
 
 FairEmail **is** [GDPR compliant](https://gdpr.eu/) because no data is collected at all.
 
 <br />
 
-Copyright &copy; 2018-2021 Marcel Bokhorst.
+Copyright &copy; 2018-2022 Marcel Bokhorst.

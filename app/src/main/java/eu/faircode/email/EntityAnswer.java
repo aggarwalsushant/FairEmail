@@ -84,6 +84,8 @@ public class EntityAnswer implements Serializable {
     @NonNull
     public Boolean favorite;
     @NonNull
+    public Boolean snippet;
+    @NonNull
     public Boolean hide;
     @NonNull
     public Boolean external;
@@ -126,6 +128,12 @@ public class EntityAnswer implements Serializable {
                 if (c > 0) {
                     first = fullName.substring(0, c).trim();
                     last = fullName.substring(c + 1).trim();
+                } else {
+                    c = fullName.indexOf('@');
+                    if (c > 0) {
+                        first = fullName.substring(0, c).trim();
+                        last = null;
+                    }
                 }
             }
         }
@@ -277,7 +285,7 @@ public class EntityAnswer implements Serializable {
 
                 ssb.append(" host ");
                 start = ssb.length();
-                ssb.append(p.imap.host);
+                ssb.append(p.imap.host == null ? "?" : p.imap.host);
                 ssb.setSpan(new StyleSpan(Typeface.BOLD),
                         start, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -299,7 +307,7 @@ public class EntityAnswer implements Serializable {
 
                 ssb.append(" host ");
                 start = ssb.length();
-                ssb.append(p.smtp.host);
+                ssb.append(p.smtp.host == null ? "?" : p.smtp.host);
                 ssb.setSpan(new StyleSpan(Typeface.BOLD),
                         start, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -316,6 +324,13 @@ public class EntityAnswer implements Serializable {
                         start, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                 ssb.append("\n\n");
+
+                if (p.appPassword)
+                    ssb.append("App password\n\n");
+
+                if (p.documentation !=
+                        null)
+                    ssb.append(HtmlHelper.fromHtml(p.documentation.toString(), context)).append("\n\n");
 
                 if (!TextUtils.isEmpty(p.link))
                     ssb.append(p.link).append("\n\n");
@@ -364,6 +379,7 @@ public class EntityAnswer implements Serializable {
         json.put("standard", standard);
         json.put("receipt", receipt);
         json.put("favorite", favorite);
+        json.put("snippet", snippet);
         json.put("hide", hide);
         json.put("external", external);
         json.put("color", color);
@@ -383,6 +399,7 @@ public class EntityAnswer implements Serializable {
         answer.standard = json.optBoolean("standard");
         answer.receipt = json.optBoolean("receipt");
         answer.favorite = json.optBoolean("favorite");
+        answer.snippet = json.optBoolean("snippet");
         answer.hide = json.optBoolean("hide");
         answer.external = json.optBoolean("external");
         if (json.has("color") && !json.isNull("color"))
@@ -403,6 +420,7 @@ public class EntityAnswer implements Serializable {
                     this.standard.equals(other.standard) &&
                     this.receipt.equals(other.receipt) &&
                     this.favorite.equals(other.favorite) &&
+                    this.snippet.equals(other.snippet) &&
                     this.hide.equals(other.hide) &&
                     this.external.equals(other.external) &&
                     this.text.equals(other.text) &&

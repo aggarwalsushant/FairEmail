@@ -153,7 +153,6 @@
     <string name="title_setup_permissions_remark">Kontaktuen informazioa atzitzeko (aukerakoa)</string>
     <string name="title_setup_permission_import_contacts">Nola inportatu ditzazket kontaktuak?</string>
     <string name="title_setup_doze">Desgaitu bateria optimizazioak</string>
-    <string name="title_setup_doze_remark">Mezuak modu fidagarrian bidali eta jasotzeko</string>
     <string name="title_setup_doze_hint">Egitan, aplikazio honek bateria gutxiago erabiltzen du bateria optimizazioak desgaitzen zaizkionean</string>
     <string name="title_setup_doze_battery">Bateria-erabilera handia?</string>
     <string name="title_setup_doze_stopped">Sinkronizazioa gelditu da?</string>
@@ -578,6 +577,8 @@
     <string name="title_delete_channel">Ezabatu jakinarazpen kanala</string>
     <string name="title_insert_contact">Gehitu kontaktua</string>
     <string name="title_edit_contact">Editatu kontaktua</string>
+    <string name="title_contact_email">E-mail</string>
+    <string name="title_contact_name">Izena</string>
     <string name="title_create_sub_folder">Sortu azpi-karpeta</string>
     <string name="title_empty_trash_ask">Ezabatu zakarrontziko mezu guztiak behin betiko?</string>
     <string name="title_empty_spam_ask">Ezabatu spam mezu guztiak behin betiko?</string>
@@ -589,7 +590,6 @@
     <string name="title_delete_operation_flag">Markatze eragiketak</string>
     <string name="title_delete_operation_delete">Ezabatze eragiketak</string>
     <string name="title_delete_operation_deleted">%1$d eragiketa ezabatuta</string>
-    <string name="title_delete_contacts">Ezabatu kontaktu lokal guztiak?</string>
     <string name="title_no_operations">Ez dago eragiketarik egiteke</string>
     <string name="title_hint_operations">Eragiketak ezabatzeak mezuen desagertzea eta sinkronizazio arazoak eragin ditzake</string>
     <string name="title_folder_name">Karpetaren izena</string>
@@ -706,7 +706,6 @@
     <string name="title_no_recorder">Ez dago audio grabagailu aplikazio egokirik eskuragarri</string>
     <string name="title_no_camera">Ez dago kamera aplikazio egokirik eskuragarri</string>
     <string name="title_no_saf">Biltegiratzea atzitzeko tresneria ez dago eskuragarri</string>
-    <string name="title_no_stream">Zaharkitutako aplikazio batek fitxategi bide bat bidali du fitxategi jario baten ordez</string>
     <string name="title_no_internet">Internet konexiorik ez edo konexio desegokia</string>
     <string name="title_no_connection">Konektatzen kontu batera edo batzuetara &#8230;</string>
     <string name="title_no_folder">Karpeta ez da existitzen</string>
@@ -1394,5 +1393,11 @@
         <item>Ertaina</item>
         <item>Handia</item>
         <item>Oso handia</item>
+    </string-array>
+    <string-array name="contactTypes">
+        <item>Hartzailea</item>
+        <item>Igorlea</item>
+        <item>Blokeatua</item>
+        <item>Not blocked</item>
     </string-array>
 </resources>

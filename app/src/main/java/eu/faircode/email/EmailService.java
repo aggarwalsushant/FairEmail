@@ -47,6 +47,7 @@ import com.sun.mail.util.SocketConnectException;
 import com.sun.mail.util.TraceOutputStream;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -54,8 +55,6 @@ import java.net.ConnectException;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
-import java.net.InterfaceAddress;
-import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -70,7 +69,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -281,6 +279,9 @@ public class EmailService implements AutoCloseable {
             properties.put("mail." + protocol + ".peek", "true");
             properties.put("mail." + protocol + ".appendbuffersize", Integer.toString(APPEND_BUFFER_SIZE));
 
+            if (!"gimaps".equals(protocol) && BuildConfig.DEBUG)
+                properties.put("mail." + protocol + ".folder.class", IMAPFolderEx.class.getName());
+
         } else if ("smtp".equals(protocol) || "smtps".equals(protocol)) {
             // https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html#properties
             properties.put("mail.smtps.starttls.enable", "false");
@@ -390,7 +391,8 @@ public class EmailService implements AutoCloseable {
                 ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
                 Network active = cm.getActiveNetwork();
                 if (active != null) {
-                    EntityLog.log(context, "Binding to active network " + active);
+                    EntityLog.log(context, EntityLog.Type.Network, "Binding to" +
+                            " active=" + active);
                     properties.put("fairemail.factory", active.getSocketFactory());
                 }
             } catch (Throwable ex) {
@@ -452,6 +454,8 @@ public class EmailService implements AutoCloseable {
                 try {
                     authenticator.refreshToken(true);
                     connect(host, port, auth, user, factory);
+                } catch (FileNotFoundException ex1) {
+                    throw new AuthenticationFailedException(ex1.getMessage(), ex1);
                 } catch (Exception ex1) {
                     Log.e(ex1);
                     String msg = ex.getMessage();
@@ -462,17 +466,10 @@ public class EmailService implements AutoCloseable {
                             context.getString(R.string.title_service_auth, msg),
                             ex.getNextException());
                 }
-            } else if (purpose == PURPOSE_CHECK) {
-                String msg = ex.getMessage();
-                if (msg != null)
-                    msg = msg.trim();
-                if (TextUtils.isEmpty(msg))
-                    throw ex;
-                throw new AuthenticationFailedException(
-                        context.getString(R.string.title_service_auth, msg),
-                        ex.getNextException());
             } else
-                throw ex;
+                throw new AuthenticationFailedException(
+                        context.getString(R.string.title_service_auth, ex.getMessage()),
+                        ex.getNextException());
         } catch (MailConnectException ex) {
             if (ConnectionHelper.vpnActive(context)) {
                 MailConnectException mex = new MailConnectException(
@@ -524,30 +521,33 @@ public class EmailService implements AutoCloseable {
             String key = "dns." + host;
             try {
                 main = InetAddress.getByName(host);
+                EntityLog.log(context, EntityLog.Type.Network, "Main address=" + main);
                 prefs.edit().putString(key, main.getHostAddress()).apply();
             } catch (UnknownHostException ex) {
                 String last = prefs.getString(key, null);
                 if (TextUtils.isEmpty(last))
                     throw new MessagingException(ex.getMessage(), ex);
                 else {
-                    Log.w("Using " + key + "=" + last);
+                    EntityLog.log(context, EntityLog.Type.Network, "Using " + key + "=" + last);
                     main = InetAddress.getByName(last);
                 }
             }
 
             boolean prefer_ip4 = prefs.getBoolean("prefer_ip4", true);
-            if (prefer_ip4 &&
-                    main instanceof Inet6Address)
-                try {
-                    for (InetAddress iaddr : InetAddress.getAllByName(host))
-                        if (iaddr instanceof Inet4Address) {
-                            main = iaddr;
-                            EntityLog.log(context, "Preferring=" + main);
-                            break;
-                        }
-                } catch (UnknownHostException ex) {
-                    Log.w(ex);
-                }
+            if (prefer_ip4 && main instanceof Inet6Address) {
+                boolean[] has46 = ConnectionHelper.has46(context);
+                if (has46[0])
+                    try {
+                        for (InetAddress iaddr : InetAddress.getAllByName(host))
+                            if (iaddr instanceof Inet4Address) {
+                                main = iaddr;
+                                EntityLog.log(context, EntityLog.Type.Network, "Preferring=" + main);
+                                break;
+                            }
+                    } catch (UnknownHostException ex) {
+                        Log.w(ex);
+                    }
+            }
 
             _connect(main, port, require_id, user, factory);
         } catch (UnknownHostException ex) {
@@ -610,71 +610,49 @@ public class EmailService implements AutoCloseable {
             }
 
             if (ioError) {
-                EntityLog.log(context, "Connect ex=" +
-                        ex.getClass().getName() + ":" + ex.getMessage());
+                EntityLog.log(context, EntityLog.Type.Network, "Connect ex=" +
+                        ex.getClass().getName() + ":" +
+                        ex + "\n" + android.util.Log.getStackTraceString(ex));
                 try {
                     // Some devices resolve IPv6 addresses while not having IPv6 connectivity
                     InetAddress[] iaddrs = InetAddress.getAllByName(host);
                     int ip4 = (main instanceof Inet4Address ? 1 : 0);
                     int ip6 = (main instanceof Inet6Address ? 1 : 0);
 
-                    boolean has4 = false;
-                    boolean has6 = false;
-                    try {
-                        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-                        while (interfaces != null && interfaces.hasMoreElements()) {
-                            NetworkInterface ni = interfaces.nextElement();
-                            for (InterfaceAddress iaddr : ni.getInterfaceAddresses()) {
-                                InetAddress addr = iaddr.getAddress();
-                                boolean local = (addr.isLoopbackAddress() || addr.isLinkLocalAddress());
-                                EntityLog.log(context, "Interface=" + ni + " addr=" + addr + " local=" + local);
-                                if (!local)
-                                    if (addr instanceof Inet4Address)
-                                        has4 = true;
-                                    else if (addr instanceof Inet6Address)
-                                        has6 = true;
-                            }
-                        }
-                    } catch (Throwable ex2) {
-                        Log.e(ex2);
-                        /*
-                            java.lang.NullPointerException: Attempt to read from field 'java.util.List java.net.NetworkInterface.childs' on a null object reference
-                                at java.net.NetworkInterface.getAll(NetworkInterface.java:498)
-                                at java.net.NetworkInterface.getNetworkInterfaces(NetworkInterface.java:398)
-                         */
-                    }
+                    boolean[] has46 = ConnectionHelper.has46(context);
 
-                    EntityLog.log(context, "Address main=" + main +
+                    EntityLog.log(context, EntityLog.Type.Network, "Address main=" + main +
                             " count=" + iaddrs.length +
-                            " ip4=" + ip4 + " max4=" + MAX_IPV4 + " has4=" + has4 +
-                            " ip6=" + ip6 + " max6=" + MAX_IPV6 + " has6=" + has6);
+                            " ip4=" + ip4 + " max4=" + MAX_IPV4 + " has4=" + has46[0] +
+                            " ip6=" + ip6 + " max6=" + MAX_IPV6 + " has6=" + has46[1]);
 
                     for (InetAddress iaddr : iaddrs) {
-                        EntityLog.log(context, "Address resolved=" + iaddr);
+                        EntityLog.log(context, EntityLog.Type.Network, "Address resolved=" + iaddr);
 
                         if (iaddr.equals(main))
                             continue;
 
                         if (iaddr instanceof Inet4Address) {
-                            if (!has4 || ip4 >= MAX_IPV4)
+                            if (!has46[0] || ip4 >= MAX_IPV4)
                                 continue;
                             ip4++;
                         }
 
                         if (iaddr instanceof Inet6Address) {
-                            if (!has6 || ip6 >= MAX_IPV6)
+                            if (!has46[1] || ip6 >= MAX_IPV6)
                                 continue;
                             ip6++;
                         }
 
                         try {
-                            EntityLog.log(context, "Falling back to " + iaddr);
+                            EntityLog.log(context, EntityLog.Type.Network, "Falling back to " + iaddr);
                             _connect(iaddr, port, require_id, user, factory);
                             return;
                         } catch (MessagingException ex1) {
                             ex = ex1;
-                            EntityLog.log(context, "Fallback ex=" +
-                                    ex1.getClass().getName() + ":" + ex1.getMessage());
+                            EntityLog.log(context, EntityLog.Type.Network, "Fallback ex=" +
+                                    ex1.getClass().getName() + ":" +
+                                    ex1 + " " + android.util.Log.getStackTraceString(ex1));
                         }
                     }
                 } catch (IOException ex1) {
@@ -689,7 +667,7 @@ public class EmailService implements AutoCloseable {
     private void _connect(
             InetAddress address, int port, boolean require_id, String user,
             SSLSocketFactoryService factory) throws MessagingException {
-        EntityLog.log(context, "Connecting to " + address + ":" + port);
+        EntityLog.log(context, EntityLog.Type.Network, "Connecting to " + address + ":" + port);
 
         isession = Session.getInstance(properties, authenticator);
 
@@ -748,7 +726,7 @@ public class EmailService implements AutoCloseable {
                         Map<String, String> crumb = new HashMap<>();
                         for (String key : sid.keySet()) {
                             crumb.put(key, sid.get(key));
-                            EntityLog.log(context, "Server " + key + "=" + sid.get(key));
+                            EntityLog.log(context, EntityLog.Type.Protocol, "Server " + key + "=" + sid.get(key));
                         }
                         Log.breadcrumb("server", crumb);
                     }
@@ -907,11 +885,11 @@ public class EmailService implements AutoCloseable {
         }
     }
 
-    public void dump() {
-        EntityLog.log(context, EntityLog.Type.Protocol, "Dump start");
+    public void dump(String tag) {
+        EntityLog.log(context, EntityLog.Type.Protocol, "Dump start " + tag);
         while (breadcrumbs != null && !breadcrumbs.isEmpty())
             EntityLog.log(context, EntityLog.Type.Protocol, "Dump " + breadcrumbs.pop());
-        EntityLog.log(context, EntityLog.Type.Protocol, "Dump end");
+        EntityLog.log(context, EntityLog.Type.Protocol, "Dump end" + tag);
     }
 
     private static class SocketFactoryService extends SocketFactory {

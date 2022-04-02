@@ -155,7 +155,6 @@
     <string name="title_setup_gmail_password">Szeretnék egy fiókot hitelesíteni jelszóval</string>
     <string name="title_setup_office_auth">Az \'AUTHENTICATE failed\' hibának oka lehet hogy a rendszeradminisztrátor kikapcsolta az IMAP/SMTP-t</string>
     <string name="title_setup_oauth_rationale">Engedélyezze a hozzáférést a %1$s fiókjához</string>
-    <string name="title_setup_oauth_update">Ismételt autorizáció meglévő fiókhoz</string>
     <string name="title_setup_oauth_updated">A fiókhitelesítés frissült</string>
     <string name="title_setup_oauth_authorize">Engedélyezés</string>
     <string name="title_setup_select_account">Válasszon fiókot</string>
@@ -180,14 +179,12 @@
     <string name="title_setup_permissions_explanation">A kapcsolatokhoz való hozzáférés szükséges ahhoz, hogy levélírásnál felajánlja a konkrét címet</string>
     <string name="title_setup_permission_import_contacts">Hogyan importálhatok névjegyeket?</string>
     <string name="title_setup_doze">Akkumulátor-optimalizálás kikapcsolása</string>
-    <string name="title_setup_doze_remark">Megbízhatóan küldhet és fogadhat e-maileket</string>
     <string name="title_setup_doze_explanation">A akkumulátor optimalizálást ki kell kapcsolni annak érdekében, hogy az app a háttérben biztonsággal tudjon küldeni és fogadni üzeneteket</string>
     <string name="title_setup_doze_hint">Habár ellentmondásosnak tűnhet, de az akkaumulátor optimalizálás kikapcsolásával kevesebb erőforrást fog használni az app</string>
     <string name="title_setup_doze_instructions">A következő Android párbeszédpanelen változtassa meg a „Nincs optimalizálva” értéket „Minden alkalmazás” értékre, válassza ki ezt az alkalmazást, és válassza a „Ne optimalizálja” lehetőséget</string>
     <string name="title_setup_doze_battery">Magas akkumulátorhasználat?</string>
     <string name="title_setup_doze_stopped">Már nem szinkronizál?</string>
     <string name="title_setup_doze_device">Ez valószínűleg szükséges ezen az eszközön</string>
-    <string name="title_setup_doze_12">A leküldéses üzenetek ki vannak kapcsolva</string>
     <string name="title_setup_alarm_12">Az alkalmazás nem fog működni</string>
     <string name="title_setup_inexact">Ébresztők &amp; emlékeztetők le vannak tiltva</string>
     <string name="title_setup_background">A háttérkorlátozások engedélyezve vannak</string>
@@ -241,6 +238,8 @@
     <string name="title_setup_theme_red_green">Piros/zöld</string>
     <string name="title_setup_theme_grey">Szürke</string>
     <string name="title_setup_theme_black">Fekete</string>
+    <string name="title_setup_theme_white">Fehér</string>
+    <string name="title_setup_theme_black_or_white">Fekete vagy fehér</string>
     <string name="title_setup_theme_black_and_white">Fekete és fehér</string>
     <string name="title_setup_theme_reverse">Színek felcserélése</string>
     <string name="title_setup_theme_light">Világos</string>
@@ -770,6 +769,7 @@
     <string name="title_drafts_select">Emailek küldéséhez egy piszkozat mappa kiválasztása szükséges a fiókbeállításokban</string>
     <string name="title_account_auth_update">Hitelesítés frissítése</string>
     <string name="title_account_auth_password">Váltás jelszó alapú azonosításra</string>
+    <string name="title_delete_account">Fiók törlése</string>
     <string name="title_account_delete">Véglegesen törli a fiókot?</string>
     <string name="title_identity_delete">Véglegesen törli az identitást?</string>
     <string name="title_edit_html">Szerkesztés HTML-ként</string>
@@ -818,6 +818,8 @@
     <string name="title_delete_channel">Értesítési csatorna törlése</string>
     <string name="title_insert_contact">Névjegy hozzáadása</string>
     <string name="title_edit_contact">Névjegy szerkesztése</string>
+    <string name="title_contact_email">Email</string>
+    <string name="title_contact_name">Név</string>
     <string name="title_import_contacts">vCard-ok importálása</string>
     <string name="title_export_contacts">vCard-ok exportálása</string>
     <string name="title_create_sub_folder">Almappa létrehozása</string>
@@ -833,7 +835,6 @@
     <string name="title_delete_operation_flag">Zászló műveletek</string>
     <string name="title_delete_operation_delete">Műveletek törlése</string>
     <string name="title_delete_operation_deleted">%1$d művelet törölve</string>
-    <string name="title_delete_contacts">Törli a helyi névjegyzéket?</string>
     <string name="title_no_operations">Nincs végrehajtásra váró művelet</string>
     <string name="title_hint_operations">Műveletek törlése eltűnő üzeneteket és szinkronizálási problémákat okozhat</string>
     <string name="title_op_title_headers">Fejlécek letöltése</string>
@@ -991,7 +992,6 @@
     <string name="title_no_recorder">Nem elérhető használható hang felvevő alkalmazás</string>
     <string name="title_no_camera">Nem elérhető használható kamera alkalmazás</string>
     <string name="title_no_saf">Tárhely hozzáférés keretrendszer nem elérhető</string>
-    <string name="title_no_stream">Egy elavult alkalmazás egy fájl elérési utat küldött egy file stream helyett</string>
     <string name="title_no_internet">Nincs vagy nem használható az internet kapcsolat</string>
     <string name="title_no_connection">Csatlakozás egy vagy több fiókhoz &#8230;</string>
     <string name="title_no_folder">A mappa nem létezik</string>
@@ -1215,6 +1215,7 @@
     <string name="title_search_in_junk">Levélszemétben is</string>
     <string name="title_search_with_before">Előtt</string>
     <string name="title_search_with_after">Után</string>
+    <string name="title_search_device_first">Először keressen az eszközön</string>
     <string name="title_search_flag_unseen">olvasatlan</string>
     <string name="title_search_flag_flagged">csillagozott</string>
     <string name="title_search_flag_hidden">rejtett</string>
@@ -1504,6 +1505,7 @@
     <string name="title_later">Később</string>
     <string name="title_undo">Visszavonás</string>
     <string name="title_redo">Mégis</string>
+    <string name="title_insert_line">Sor beszúrása</string>
     <string name="title_add">Hozzáadás</string>
     <string name="title_browse">Megnyitás a következővel:</string>
     <string name="title_info">Info</string>
@@ -1681,7 +1683,7 @@
         <item>Ugrás a következő beszélgetéshez</item>
     </string-array>
     <string-array name="resizeNames">
-        <item>Extra small</item>
+        <item>Nagyon kicsi</item>
         <item>Kicsi</item>
         <item>Közepes</item>
         <item>Nagy</item>
@@ -1789,5 +1791,11 @@
         <item>Közepes</item>
         <item>Nagy</item>
         <item>Óriási</item>
+    </string-array>
+    <string-array name="contactTypes">
+        <item>Címzett</item>
+        <item>Feladó</item>
+        <item>Letiltva</item>
+        <item>Not blocked</item>
     </string-array>
 </resources>

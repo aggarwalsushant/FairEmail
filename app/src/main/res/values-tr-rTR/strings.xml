@@ -72,11 +72,15 @@
     </plurals>
     <string name="title_ask_spam_who">%1$s\' in iletisi istenmeyen posta olarak kabul edilsin mi?</string>
     <string name="title_junk_hint">İstenmeyen (spam) e-postaların filtrelenmesinden servis sağlayıcınız sorumludur. Bir e-posta istemcisi bu işlemi gerçekleştirebilecek veriye sahip değildir.</string>
+    <string name="title_junk_pop_hint">        Engellenen gönderenlerden gelen mesajlar indirilmeyecektir.
+        \"Mesajları sunucuda bırak\" etkin değilse, bu mesajlar kalıcı olarak kaybolacaktır!
+     </string>
     <string name="title_block">Engelle: %1$s</string>
     <string name="title_block_sender">Göndereni engelle</string>
     <string name="title_block_sender_domain">\'%1$s\' alan adını engelle</string>
     <string name="title_block_sender_hint">Bir göndereni engellemek ücretsiz bir özelliktir.
 Gönderen etki alanını engellemek, profesyonel bir özellik olan filtre kurallarını kullanır.    </string>
+    <string name="title_blocked_senders">Engellenmiş gönderenler</string>
     <string name="title_junk_filter">Yerel spam filtreleri</string>
     <string name="title_junk_filter_hint">Bu, pil kullanımını artırabilir ve iletileri yanlış olarak spam işaretleyebilir</string>
     <string name="title_junk_blocklist">Spam engelleme listelerini kullan</string>
@@ -154,7 +158,7 @@ Gönderen etki alanını engellemek, profesyonel bir özellik olan filtre kurall
     <string name="title_setup_gmail_password">Bir hesabı bir şifre ile yetkilendirmek istiyorum</string>
     <string name="title_setup_office_auth">\'AUTHENTICATE failed\' hatası, sistem yöneticinizin IMAP/SMTP protokollerini engellemesinden kaynaklanıyor olabilir</string>
     <string name="title_setup_oauth_rationale">%1$s hesabınıza erişim için yetkilendirin</string>
-    <string name="title_setup_oauth_update">Mevcut hesabı tekrar yetkilendirin</string>
+    <string name="title_setup_oauth_update">Mevcut bir hesabı yeniden yetkilendir (aksi takdirde yeni bir hesap oluştur)</string>
     <string name="title_setup_oauth_updated">Hesap yetkilendirme güncellendi</string>
     <string name="title_setup_oauth_authorize">Yetkilendir</string>
     <string name="title_setup_select_account">Hesap seç</string>
@@ -179,14 +183,13 @@ Gönderen etki alanını engellemek, profesyonel bir özellik olan filtre kurall
     <string name="title_setup_permissions_explanation">Kişi bilgilerini aramak ve kişi önermek için kişi izinleri gerekir</string>
     <string name="title_setup_permission_import_contacts">Kişileri nasıl içe aktarabilirim?</string>
     <string name="title_setup_doze">Pil optimizasyonlarını devre dışı bırak</string>
-    <string name="title_setup_doze_remark">Güvenilir bir şekilde e-posta almak için</string>
+    <string name="title_setup_doze_remark">Arka planda güvenilir bir şekilde e-posta göndermek ve almak için</string>
     <string name="title_setup_doze_explanation">Arka planda mesajların güvenilir bir şekilde gönderilmesini ve alınmasını sağlamak için uygulamanın pil optimizasyonları devre dışı bırakılmalıdır</string>
     <string name="title_setup_doze_hint">Bu kulağa çelişkili gelse de, bu uygulama için pil optimizasyonlarını kapatmak daha az pil kullanımına neden olur</string>
     <string name="title_setup_doze_instructions">Bir sonraki Android iletişim kutusunda \"Optimize edilmemiş\" i \"Tüm uygulamalar\" olarak değiştirin, bu uygulamayı seçin ve \"Optimize etme\" yi seçin</string>
     <string name="title_setup_doze_battery">Yüksek pil kullanımı?</string>
     <string name="title_setup_doze_stopped">Eşzamanlama durdu mu?</string>
     <string name="title_setup_doze_device">Bu muhtemelen bu cihaz için gereklidir</string>
-    <string name="title_setup_doze_12">Push mesajları devre dışı</string>
     <string name="title_setup_alarm_12">Uygulama çalışmayacak</string>
     <string name="title_setup_inexact">Alarmlar &amp; hatırlatıcılar devre dışı bırakıldı</string>
     <string name="title_setup_background">Arka plan kısıtlamaları etkinleştirildi</string>
@@ -263,6 +266,8 @@ Gönderen etki alanını engellemek, profesyonel bir özellik olan filtre kurall
     <string name="title_setup_reset_full">Orijinal mesajları göster</string>
     <string name="title_setup_reset_images">Resimleri göster</string>
     <string name="title_setup_reset_links">Bağlantıları onaylayın</string>
+    <string name="title_check_gmail_oauth">Gmail hesaplarınız 30 Mayıs 2022\'den sonra çalışmaya devam edecek</string>
+    <string name="title_check_gmail_password">Bazı Gmail hesaplarınız 30 Mayıs 2022\'den sonra çalışmayı durdurabilir</string>
     <string name="title_advanced_hint_title">Daha gelişmiş seçenekler</string>
     <string name="title_advanced_hint_message">        Daha gelişmiş seçeneklere gidiyorsunuz.        Tüm seçenekler, farklı bir tercihiniz olmadığı sürece değiştirmenizin gerekmediği yaygın kullanılan varsayılan değerlere sahiptir.
     </string>
@@ -371,6 +376,7 @@ Gönderen etki alanını engellemek, profesyonel bir özellik olan filtre kurall
     <string name="title_advanced_close_pane">Bir konuşmayı kapatırken satırı veya sütunu daralt</string>
     <string name="title_advanced_column_width">Mesaj sütunu genişliği: %1$s %%</string>
     <string name="title_advanced_nav_options">Gezinme menüsü seçeneklerini göster</string>
+    <string name="title_advanced_nav_categories">Gezinme menüsünde hesap kategorilerini göster</string>
     <string name="title_advanced_nav_pin">Gezinme menüsünü sabitle</string>
     <string name="title_advanced_nav_hide_title">Gezinme menüsü seçenekleri gizlensin mi?</string>
     <string name="title_advanced_nav_hide_message">Seçenekleri ekran ayarlarında tekrar etkinleştirebilirsiniz</string>
@@ -429,6 +435,7 @@ Gönderen etki alanını engellemek, profesyonel bir özellik olan filtre kurall
     <string name="title_advanced_preview_italic">İleti önizlemesini italik olarak göster</string>
     <string name="title_advanced_preview_lines">Önizleme satırı sayısı</string>
     <string name="title_advanced_addresses">Öntanımlı olarak adres ayrıntılarını göster</string>
+    <string name="title_advanced_unzip">Sıkıştırılmış eklerin içeriğini göster</string>
     <string name="title_advanced_attachments_alt">İleti metninden sonra ekleri göster</string>
     <string name="title_advanced_thumbnails">İleti metninden sonra görsellerin önizlemelerini göster</string>
     <string name="title_advanced_message_text_zoom2">Varsayılan mesaj metni yakınlaştırma: %1$s %%</string>
@@ -575,6 +582,7 @@ Gönderen etki alanını engellemek, profesyonel bir özellik olan filtre kurall
     </string>
     <string name="title_advanced_power_menu">Android güç menüsüne eylemler ekle</string>
     <string name="title_advanced_external_search">Diğer uygulamaların mesajlarda arama yapmasına izin ver</string>
+    <string name="title_advanced_sort_answers">Yanıt şablonlarını kullanım sıklığına göre sırala</string>
     <string name="title_advanced_shortcuts">Sık kullanılan kişileri Android\'in paylaşma menüsünde göster</string>
     <string name="title_advanced_fts">Arama indeksini oluştur</string>
     <string name="title_advanced_fts_indexed">%1$d / %2$d mesaj indekslendi (%3$s)</string>
@@ -654,6 +662,7 @@ Gönderen etki alanını engellemek, profesyonel bir özellik olan filtre kurall
     <string name="title_advanced_monospaced_pre_hint">Yalnızca düz metin iletiler önceden biçimlendirilmiş olarak kabul edilecektir</string>
     <string name="title_advanced_placeholders_hint">Bu yalnızca yeniden biçimlendirilmiş mesajlar için geçerlidir</string>
     <string name="title_advanced_inline_hint">Satıriçi resimler mesajın içine eklenen resimlerdir</string>
+    <string name="compressed">%2$s\'den fazla dosya içeren veya %3$s\'den büyük dosyalar içeren sıkıştırılmış dosyaların (%1$s) içerikleri gösterilmeyecek</string>
     <string name="title_advanced_parse_classes_hint">Bu, mesajları daha doğru bir şekilde gösterecektir, ancak muhtemelen bir gecikme ile</string>
     <string name="title_advanced_language_detection_hint">Dil algılama desteği, cihaz üreticisine bağlıdır</string>
     <string name="title_advanced_autoexpand_hint">Bir sohbette yalnızca bir ileti veya yalnızca bir okunmamış ileti olduğunda iletiyi otomatik olarak aç</string>
@@ -839,6 +848,9 @@ Gönderen etki alanını engellemek, profesyonel bir özellik olan filtre kurall
     <string name="title_delete_channel">Bildirim kanalını sil</string>
     <string name="title_insert_contact">Kişi ekle</string>
     <string name="title_edit_contact">Kişiyi düzenle</string>
+    <string name="title_contact_email">e-posta</string>
+    <string name="title_contact_name">Ad</string>
+    <string name="title_contact_group">Grup</string>
     <string name="title_import_contacts">vCard\'ları içe aktar</string>
     <string name="title_export_contacts">vCard\'ları dışa aktar</string>
     <string name="title_create_sub_folder">Alt dizin oluştur</string>
@@ -854,7 +866,7 @@ Gönderen etki alanını engellemek, profesyonel bir özellik olan filtre kurall
     <string name="title_delete_operation_flag">İşaretleme işlemleri</string>
     <string name="title_delete_operation_delete">Silme işlemleri</string>
     <string name="title_delete_operation_deleted">%1$d işlem silindi</string>
-    <string name="title_delete_contacts">Tüm yerel rehber silinsin mi?</string>
+    <string name="title_delete_contacts">Görünür yerel rehber silinsin mi?</string>
     <string name="title_no_operations">Bekleyen işlem yok</string>
     <string name="title_check_operations">İşlemleri kontrol ediyor</string>
     <string name="title_hint_operations">İşlemleri silmek mesajların kaybolmasına ve senkronizasyon sorunlarına neden olabilir</string>
@@ -964,6 +976,7 @@ Gönderen etki alanını engellemek, profesyonel bir özellik olan filtre kurall
     <string name="title_eml_remark">Mesajları iletmek için ham (orijinal) mesajların e-posta sunucusundan indirilmesi gerekir. Bunun için internet bağlantısı gerekir ve mesajların yine de e-posta sunucusunda saklanması gerekir.</string>
     <string name="title_eml_option">Bu, bağlantı ayarlarında her zaman ham mesaj dosyalarının indirilmesini etkinleştirerek önlenebilir</string>
     <string name="title_eml_downloaded">İndirilen ham iletiler: %1$s</string>
+    <string name="title_auto_confirm" comment="title_auto_confirm&#10;Option title for checkbox to auto close (confirm) dialogs.">Birkaç saniye sonra otomatik olarak onayla</string>
     <string name="title_buttons">Seçim düğmeleri</string>
     <string name="title_buttons_hint">Gerçek eylemler, hesap türüne ve yapılandırmaya bağlıdır</string>
     <string name="title_button_search">Mesajlarda ara</string>
@@ -1012,7 +1025,8 @@ Gönderen etki alanını engellemek, profesyonel bir özellik olan filtre kurall
     <string name="title_no_recorder">Uygun bir ses kaydedici uygulaması yok</string>
     <string name="title_no_camera">Uygun bir kamera uygulaması yok</string>
     <string name="title_no_saf">Depolama erişim çerçevesi mevcut değil</string>
-    <string name="title_no_stream">Eski bir uygulama bir dosya akışı yerine dosya yolu gönderdi</string>
+    <string name="title_no_stream">FairEmail\'in bu dosyayı doğrudan okuma izni yok</string>
+    <string name="title_no_stream_help">Bu, dosyayı daha modern bir dosya yöneticisi uygulamasıyla seçerek veya dosyaları okuma izni vererek çözülebilir</string>
     <string name="title_no_internet">Uygun internet bağlantısı veya internet yok</string>
     <string name="title_no_connection">Bir veya daha fazla hesaba bağlanılıyor &#8230;</string>
     <string name="title_no_folder">Klasör yok</string>
@@ -1038,6 +1052,7 @@ Gönderen etki alanını engellemek, profesyonel bir özellik olan filtre kurall
     <string name="title_ask_delete_accept">İletileri kalıcı olarak silmenin geri alınamayacağını anlıyorum</string>
     <string name="title_ask_delete_answer">Yanıt kalıbı kalıcı olarak silinsin mi?</string>
     <string name="title_ask_delete_rule">Kural kalıcı olarak silinsin mi?</string>
+    <string name="title_ask_delete_attachments">Tüm ekler kaldırılsın mı?</string>
     <string name="title_ask_discard">Taslak silinsin mi?</string>
     <string name="title_ask_show_html">Özgün iletiyi göstermek gizliliğe duyarlı bilgilerin sızmasına neden olabilir</string>
     <string name="title_ask_show_html_remark">Orijinal mesajı koyu arka planda görüntülemek mümkün değildir çünkü görünmez koyu metinlere ve resimlere neden olabilir</string>
@@ -1239,6 +1254,7 @@ Gönderen etki alanını engellemek, profesyonel bir özellik olan filtre kurall
     <string name="title_search_in_junk">Spam içinde</string>
     <string name="title_search_with_before">Önce</string>
     <string name="title_search_with_after">Sonra</string>
+    <string name="title_search_device_first">Önce cihazda ara</string>
     <string name="title_search_flag_unseen">okunmamış</string>
     <string name="title_search_flag_flagged">yıldızlı</string>
     <string name="title_search_flag_hidden">gizli</string>
@@ -1250,6 +1266,7 @@ Gönderen etki alanını engellemek, profesyonel bir özellik olan filtre kurall
     <string name="title_search_device">Cihazda ara</string>
     <string name="title_search_server">Sunucuda ara</string>
     <string name="title_search_in">İçinde ara</string>
+    <string name="title_search_delete">Kayıtlı arama silinsin mi?</string>
     <string name="title_sort_on">Sırala</string>
     <string name="title_sort_on_time">Zaman</string>
     <string name="title_sort_on_unread">Okunmadı</string>
@@ -1295,6 +1312,7 @@ Gönderen etki alanını engellemek, profesyonel bir özellik olan filtre kurall
     <string name="title_answer_group">Şablon grubu (isteğe bağlı)</string>
     <string name="title_answer_standard">Varsayılan</string>
     <string name="title_answer_favorite">Favori</string>
+    <string name="title_answer_snippet">Kısaca</string>
     <string name="title_answer_receipt">Okuma makbuzu olarak kullan</string>
     <string name="title_answer_hide">Menülerden gizle</string>
     <string name="title_answer_text">Kalıp metni</string>
@@ -1822,5 +1840,11 @@ Gönderen etki alanını engellemek, profesyonel bir özellik olan filtre kurall
         <item>Orta</item>
         <item>Büyük</item>
         <item>Ekstra büyük</item>
+    </string-array>
+    <string-array name="contactTypes">
+        <item>Alıcı</item>
+        <item>Gönderen</item>
+        <item>Engellenen</item>
+        <item>Engellenmemiş</item>
     </string-array>
 </resources>

@@ -72,12 +72,16 @@
     </plurals>
     <string name="title_ask_spam_who">Traiter le message de %1$s comme indésirable ?</string>
     <string name="title_junk_hint">Votre fournisseur de messagerie est responsable du filtrage des messages indésirables. Une application de messagerie ne dispose pas de toutes les données nécessaires pour le faire de façon fiable.</string>
+    <string name="title_junk_pop_hint">        Les messages des expéditeurs bloqués ne seront pas téléchargés.
+        Si l\'option \"Laisser les messages sur le serveur\" n\'est pas activée, ces messages seront définitivement perdus !
+    </string>
     <string name="title_block">Bloquer %1$s</string>
     <string name="title_block_sender">Bloquer l\'expéditeur</string>
     <string name="title_block_sender_domain">Bloquer le domaine \'%1$s\'</string>
     <string name="title_block_sender_hint">        Bloquer un expéditeur est une fonctionnalité gratuite.
         Bloquer un domaine expéditeur utilise une règle de filtrage qui est une fonctionnalité Pro.
     </string>
+    <string name="title_blocked_senders">Expéditeurs bloqués</string>
     <string name="title_junk_filter">Utiliser le filtre local des indésirables</string>
     <string name="title_junk_filter_hint">Ceci peut augmenter l\'utilisation de la batterie et marquer par erreur des messages comme indésirables</string>
     <string name="title_junk_blocklist">Utiliser des listes de blocage des indésirables</string>
@@ -155,7 +159,7 @@
     <string name="title_setup_gmail_password">Je veux autoriser un compte avec un mot de passe</string>
     <string name="title_setup_office_auth">L’erreur \'AUTHENTICATE failed\' peut être due à la désactivation d’IMAP/SMTP par l’administrateur système</string>
     <string name="title_setup_oauth_rationale">Autoriser l\'accès à votre compte %1$s</string>
-    <string name="title_setup_oauth_update">Autoriser à nouveau le compte existant</string>
+    <string name="title_setup_oauth_update">Autoriser à nouveau un compte existant (sinon créer un nouveau compte)</string>
     <string name="title_setup_oauth_updated">L\'autorisation du compte a été mise à jour</string>
     <string name="title_setup_oauth_authorize">Autoriser</string>
     <string name="title_setup_select_account">Sélectionner un compte</string>
@@ -180,14 +184,13 @@
     <string name="title_setup_permissions_explanation">L\'autorisation d\'accès aux contacts est requise pour rechercher des informations de contact et pour suggérer des contacts</string>
     <string name="title_setup_permission_import_contacts">Comment puis-je importer des contacts ?</string>
     <string name="title_setup_doze">Désactiver les optimisations de la batterie</string>
-    <string name="title_setup_doze_remark">Pour envoyer et recevoir des e-mails de manière fiable</string>
+    <string name="title_setup_doze_remark">Pour envoyer et recevoir des e-mails de manière fiable en arrière-plan</string>
     <string name="title_setup_doze_explanation">Les optimisations de la batterie doivent être désactivées pour que l\'application assure un envoi et une réception fiables des messages en arrière-plan</string>
     <string name="title_setup_doze_hint">Bien que cela puisse sembler contradictoire, désactiver les optimisations de batterie pour cette application entraînera une diminution de l\'utilisation de la batterie</string>
     <string name="title_setup_doze_instructions">Dans la prochaine fenêtre de dialogue Android, changez « Non optimisées » en « Toutes les applications », sélectionnez cette application et cochez « Ne pas optimiser »</string>
     <string name="title_setup_doze_battery">Utilisation élevée de la batterie ?</string>
     <string name="title_setup_doze_stopped">Synchronisation arrêtée ?</string>
     <string name="title_setup_doze_device">Ceci est probablement nécessaire pour cet appareil</string>
-    <string name="title_setup_doze_12">Les messages push sont désactivés</string>
     <string name="title_setup_alarm_12">L\'application ne fonctionnera pas</string>
     <string name="title_setup_inexact">Alarmes &amp; rappels désactivés</string>
     <string name="title_setup_background">Les restrictions d\'arrière-plan sont activées</string>
@@ -264,6 +267,8 @@
     <string name="title_setup_reset_full">Afficher les messages originaux</string>
     <string name="title_setup_reset_images">Afficher les images</string>
     <string name="title_setup_reset_links">Confirmer les liens</string>
+    <string name="title_check_gmail_oauth">Vos comptes Gmail continueront de fonctionner après le 30 mai 2022</string>
+    <string name="title_check_gmail_password">Certains de vos comptes Gmail peuvent cesser de fonctionner après le 30 mai 2022</string>
     <string name="title_advanced_hint_title">Paramètres avancés</string>
     <string name="title_advanced_hint_message">        Vous parcourez les paramètres avancés.
         Toutes les options ont des valeurs par défaut couramment utilisées que vous n\'avez pas besoin de modifier sauf si vous avez une préférence différente.
@@ -373,6 +378,7 @@
     <string name="title_advanced_close_pane">Replier la ligne ou la colonne lors de la fermeture d\'une conversation</string>
     <string name="title_advanced_column_width">Largeur de la colonne des messages : %1$s %%</string>
     <string name="title_advanced_nav_options">Afficher les options du menu de navigation</string>
+    <string name="title_advanced_nav_categories">Afficher les catégories de compte dans le menu de navigation</string>
     <string name="title_advanced_nav_pin">Épingler le menu de navigation</string>
     <string name="title_advanced_nav_hide_title">Masquer les options du menu de navigation ?</string>
     <string name="title_advanced_nav_hide_message">Vous pouvez réactiver les options dans les paramètres d\'affichage</string>
@@ -431,6 +437,7 @@
     <string name="title_advanced_preview_italic">Afficher l\'aperçu du message en italique</string>
     <string name="title_advanced_preview_lines">Nombre de lignes d\'aperçu</string>
     <string name="title_advanced_addresses">Déplier par défaut les détails de l’adresse</string>
+    <string name="title_advanced_unzip">Afficher le contenu des pièces jointes compressées</string>
     <string name="title_advanced_attachments_alt">Afficher les pièces jointes après le texte du message</string>
     <string name="title_advanced_thumbnails">Afficher les vignettes des images après le texte du message</string>
     <string name="title_advanced_message_text_zoom2">Zoom du texte du message par défaut : %1$s %%</string>
@@ -578,6 +585,7 @@
     </string>
     <string name="title_advanced_power_menu">Ajouter des actions au menu alimentation d\'Android</string>
     <string name="title_advanced_external_search">Autoriser les autres applications à rechercher dans les messages</string>
+    <string name="title_advanced_sort_answers">Trier les modèles de réponse par fréquence d\'utilisation</string>
     <string name="title_advanced_shortcuts">Afficher les contacts fréquemment utilisés dans le menu « Partager » d’Android</string>
     <string name="title_advanced_fts">Construire l\'index de recherche</string>
     <string name="title_advanced_fts_indexed">%1$d / %2$d messages indexés (%3$s)</string>
@@ -657,6 +665,7 @@
     <string name="title_advanced_monospaced_pre_hint">Seuls les messages en texte brut seront considérés comme préformatés</string>
     <string name="title_advanced_placeholders_hint">Ceci s\'applique uniquement aux messages reformatés</string>
     <string name="title_advanced_inline_hint">Les images incluses dans le message font partie intégrante du message</string>
+    <string name="compressed">Le contenu des fichiers compressés (%1$s) avec plus de %2$s fichiers ou avec des fichiers de taille supérieure à %3$s ne sera pas affiché</string>
     <string name="title_advanced_parse_classes_hint">L’affichage des messages sera plus fidèle mais pourra être retardé</string>
     <string name="title_advanced_language_detection_hint">La prise en charge de la détection de la langue dépend du fabricant de l\'appareil</string>
     <string name="title_advanced_autoexpand_hint">Ouvrir automatiquement le message s’il n’y a qu’un seul message ou un seul message non lu dans une conversation</string>
@@ -842,6 +851,9 @@
     <string name="title_delete_channel">Supprimer un canal de notification</string>
     <string name="title_insert_contact">Ajouter un contact</string>
     <string name="title_edit_contact">Modifier un contact</string>
+    <string name="title_contact_email">E-mail</string>
+    <string name="title_contact_name">Nom</string>
+    <string name="title_contact_group">Groupe</string>
     <string name="title_import_contacts">Importer des vCards</string>
     <string name="title_export_contacts">Exporter des vCards</string>
     <string name="title_create_sub_folder">Créer un sous-dossier</string>
@@ -857,7 +869,7 @@
     <string name="title_delete_operation_flag">Opérations de signalement</string>
     <string name="title_delete_operation_delete">Opérations de suppression</string>
     <string name="title_delete_operation_deleted">%1$d opérations supprimées</string>
-    <string name="title_delete_contacts">Supprimer tous les contacts locaux ?</string>
+    <string name="title_delete_contacts">Supprimer les contacts locaux visibles ?</string>
     <string name="title_no_operations">Aucune opération en attente</string>
     <string name="title_check_operations">Vérification des opérations en cours</string>
     <string name="title_hint_operations">La suppression d’opérations en attente peut provoquer la perte de messages ainsi que des problèmes de synchronisation</string>
@@ -969,6 +981,7 @@
     <string name="title_eml_remark">Pour transférer des messages, les messages bruts (originaux) doivent être téléchargés depuis le serveur de messagerie. Ceci nécessite une connexion Internet et les messages doivent cependant être stockés sur le serveur de messagerie.</string>
     <string name="title_eml_option">Ceci peut être évité en activant le téléchargement systématique des fichiers de messages originaux dans les paramètres de connexion</string>
     <string name="title_eml_downloaded">Messages originaux téléchargés : %1$s</string>
+    <string name="title_auto_confirm" comment="title_auto_confirm&#10;Option title for checkbox to auto close (confirm) dialogs.">Confirmer automatiquement après quelques secondes</string>
     <string name="title_buttons">Sélectionner les boutons</string>
     <string name="title_buttons_hint">Les actions réellement disponibles dépendent du type de compte et de la configuration</string>
     <string name="title_button_search">Rechercher dans les messages</string>
@@ -1017,7 +1030,8 @@
     <string name="title_no_recorder">Aucune application d\'enregistrement audio disponible</string>
     <string name="title_no_camera">Aucune application d’appareil photo disponible</string>
     <string name="title_no_saf">Programme d’accès au stockage non disponible</string>
-    <string name="title_no_stream">Une application obsolète a envoyé un chemin d’accès au lieu d’un flux de fichier</string>
+    <string name="title_no_stream">FairEmail n\'a pas la permission de lire ce fichier directement</string>
+    <string name="title_no_stream_help">Ceci peut être résolu en sélectionnant le fichier avec une application plus moderne de gestion de fichiers ou en accordant la permission de lire les fichiers</string>
     <string name="title_no_internet">Aucune connexion Internet ou connexion non appropriée</string>
     <string name="title_no_connection">Connexion à un ou plusieurs comptes&#8230;</string>
     <string name="title_no_folder">Le dossier n\'existe pas</string>
@@ -1043,6 +1057,7 @@
     <string name="title_ask_delete_accept">Je comprends que la suppression définitive des messages est irréversible</string>
     <string name="title_ask_delete_answer">Supprimer définitivement ce modèle de réponse ?</string>
     <string name="title_ask_delete_rule">Supprimer définitivement la règle ?</string>
+    <string name="title_ask_delete_attachments">Supprimer toutes les pièces jointes ?</string>
     <string name="title_ask_discard">Abandonner le brouillon ?</string>
     <string name="title_ask_show_html">L’affichage du message original peut entraîner la divulgation d’informations confidentielles</string>
     <string name="title_ask_show_html_remark">L’affichage du message original sur un arrière-plan sombre n’est pas possible car cela pourrait rendre invisibles le texte et les images sombres</string>
@@ -1246,6 +1261,7 @@
     <string name="title_search_in_junk">Dans les indésirables</string>
     <string name="title_search_with_before">Avant le</string>
     <string name="title_search_with_after">Après le</string>
+    <string name="title_search_device_first">Rechercher d\'abord sur l\'appareil</string>
     <string name="title_search_flag_unseen">non lus</string>
     <string name="title_search_flag_flagged">suivis</string>
     <string name="title_search_flag_hidden">masqués</string>
@@ -1257,6 +1273,7 @@
     <string name="title_search_device">Rechercher sur l\'appareil</string>
     <string name="title_search_server">Rechercher sur le serveur</string>
     <string name="title_search_in">Rechercher dans</string>
+    <string name="title_search_delete">Supprimer la recherche enregistrée ?</string>
     <string name="title_sort_on">Trier par</string>
     <string name="title_sort_on_time">Date</string>
     <string name="title_sort_on_unread">Non lus</string>
@@ -1302,6 +1319,7 @@
     <string name="title_answer_group">Groupe de modèles (facultatifl)</string>
     <string name="title_answer_standard">Par défaut</string>
     <string name="title_answer_favorite">Favori</string>
+    <string name="title_answer_snippet">Fragment</string>
     <string name="title_answer_receipt">Utiliser comme confirmation de lecture</string>
     <string name="title_answer_hide">Masquer dans les menus</string>
     <string name="title_answer_text">Texte du modèle</string>
@@ -1830,5 +1848,11 @@
         <item>Moyen</item>
         <item>Grand</item>
         <item>Très grand</item>
+    </string-array>
+    <string-array name="contactTypes">
+        <item>Destinataire</item>
+        <item>Expéditeur</item>
+        <item>Bloqué</item>
+        <item>Non bloqué</item>
     </string-array>
 </resources>

@@ -35,6 +35,7 @@ import android.net.LinkProperties;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.OperationCanceledException;
@@ -199,6 +200,15 @@ public class ServiceSynchronize extends ServiceBase implements SharedPreferences
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             registerReceiver(dataSaverChanged, new IntentFilter(ConnectivityManager.ACTION_RESTRICT_BACKGROUND_CHANGED));
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            IntentFilter suspend = new IntentFilter();
+            suspend.addAction(Intent.ACTION_MY_PACKAGE_SUSPENDED);
+            suspend.addAction(Intent.ACTION_MY_PACKAGE_UNSUSPENDED);
+            registerReceiver(suspendChanged, suspend);
+        }
+
+        registerReceiver(batteryChanged, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         DB db = DB.getInstance(this);
@@ -341,6 +351,11 @@ public class ServiceSynchronize extends ServiceBase implements SharedPreferences
                                     event = true;
                                     start(current, current.accountState.isEnabled(current.enabled) || sync, force);
                                 }
+                            } else if (current.canRun() && !state.isAlive()) {
+                                Log.e(current + " died");
+                                EntityLog.log(ServiceSynchronize.this, "### died " + current);
+                                event = true;
+                                start(current, current.accountState.isEnabled(current.enabled) || sync, force);
                             } else {
                                 if (state != null) {
                                     Network p = prev.networkState.getActive();
@@ -854,6 +869,11 @@ public class ServiceSynchronize extends ServiceBase implements SharedPreferences
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.unregisterOnSharedPreferenceChangeListener(this);
 
+        unregisterReceiver(batteryChanged);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+            unregisterReceiver(suspendChanged);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             unregisterReceiver(dataSaverChanged);
 
@@ -1248,6 +1268,8 @@ public class ServiceSynchronize extends ServiceBase implements SharedPreferences
         if (lastNetworkState == null || !lastNetworkState.isSuitable())
             updateNetworkState(null, "watchdog");
 
+        onEval(intent);
+
         ServiceSend.boot(this);
 
         scheduleWatchdog(this);
@@ -1366,7 +1388,7 @@ public class ServiceSynchronize extends ServiceBase implements SharedPreferences
             state.setBackoff(CONNECT_BACKOFF_START);
             if (account.backoff_until != null)
                 db.account().setAccountBackoff(account.id, null);
-            while (state.isRunning() && currentThread.equals(accountThread)) {
+            while (state.isRunning()) {
                 state.reset();
                 Log.i(account.name + " run thread=" + currentThread);
 
@@ -2227,10 +2249,10 @@ public class ServiceSynchronize extends ServiceBase implements SharedPreferences
                     Log.i(account.name + " done state=" + state);
                 } catch (Throwable ex) {
                     last_fail = ex;
-                    iservice.dump();
+                    iservice.dump(account.name);
                     Log.e(account.name, ex);
                     EntityLog.log(this, EntityLog.Type.Account, account,
-                            account.name + " connect " + Log.formatThrowable(ex, false));
+                            account.name + " connect " + ex + "\n" + android.util.Log.getStackTraceString(ex));
                     db.account().setAccountError(account.id, Log.formatThrowable(ex));
 
                     // Report account connection error
@@ -2391,7 +2413,7 @@ public class ServiceSynchronize extends ServiceBase implements SharedPreferences
                         }
                     } else {
                         // Linear back-off
-                        int b = backoff + 60;
+                        int b = backoff + (backoff < CONNECT_BACKOFF_INTERMEDIATE * 60 ? 60 : 5 * 60);
                         if (b > CONNECT_BACKOFF_ALARM_MAX * 60)
                             b = CONNECT_BACKOFF_ALARM_MAX * 60;
                         state.setBackoff(b);
@@ -2454,11 +2476,14 @@ public class ServiceSynchronize extends ServiceBase implements SharedPreferences
                 accountThread = db.account().getAccountThread(account.id);
             }
 
-            if (!currentThread.equals(accountThread) && accountThread != null)
-                Log.w(account.name + " orphan thread id=" + currentThread + "/" + accountThread);
+            if (!currentThread.equals(accountThread) && accountThread != null) {
+                String msg = account.name + " orphan thread id=" + currentThread + "/" + accountThread;
+                EntityLog.log(this, msg);
+                Log.e(msg);
+            }
         } finally {
             EntityLog.log(this, EntityLog.Type.Account, account,
-                    account.name + " stopped");
+                    account.name + " stopped running=" + state.isRunning());
             wlAccount.release();
         }
     }
@@ -2621,6 +2646,28 @@ public class ServiceSynchronize extends ServiceBase implements SharedPreferences
             EntityLog.log(context, "Data saver=" + status);
 
             updateNetworkState(null, "datasaver");
+        }
+    };
+
+    private final BroadcastReceiver suspendChanged = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            EntityLog.log(context, intent.getAction() + " " +
+                    TextUtils.join(", ", Log.getExtras(intent.getExtras())));
+        }
+    };
+
+    private final BroadcastReceiver batteryChanged = new BroadcastReceiver() {
+        private Integer lastLevel = null;
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+            if (!Objects.equals(level, lastLevel)) {
+                lastLevel = level;
+                EntityLog.log(context, intent.getAction() + " " +
+                        TextUtils.join(", ", Log.getExtras(intent.getExtras())));
+            }
         }
     };
 
@@ -2879,9 +2926,6 @@ public class ServiceSynchronize extends ServiceBase implements SharedPreferences
     }
 
     static int getPollInterval(Context context) {
-        if (Helper.isOptimizing12(context))
-            return (BuildConfig.DEBUG ? 2 : 15);
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getInt("poll_interval", 0); // minutes
     }
@@ -2982,8 +3026,12 @@ public class ServiceSynchronize extends ServiceBase implements SharedPreferences
             PendingIntent pi;
             if (isBackgroundService(context))
                 pi = PendingIntentCompat.getService(context, PI_WATCHDOG, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            else
-                pi = PendingIntentCompat.getForegroundService(context, PI_WATCHDOG, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            else {
+                // Workaround for Xiaomi Android 11
+                pi = PendingIntentCompat.getForegroundService(context, PI_WATCHDOG, intent, PendingIntent.FLAG_NO_CREATE);
+                if (pi == null)
+                    pi = PendingIntentCompat.getForegroundService(context, PI_WATCHDOG, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            }
 
             AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             am.cancel(pi);

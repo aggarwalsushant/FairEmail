@@ -42,6 +42,7 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.database.MergeCursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -73,6 +74,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.ArrowKeyMovementMethod;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.BulletSpan;
 import android.text.style.CharacterStyle;
 import android.text.style.ImageSpan;
@@ -240,6 +242,7 @@ public class FragmentCompose extends FragmentBase {
     private ImageButton ibBccAdd;
     private EditText etSubject;
     private ImageButton ibCcBcc;
+    private ImageButton ibRemoveAttachments;
     private RecyclerView rvAttachment;
     private TextView tvNoInternetAttachments;
     private TextView tvDsn;
@@ -320,7 +323,7 @@ public class FragmentCompose extends FragmentBase {
     private static final int REQUEST_LINK = 12;
     private static final int REQUEST_DISCARD = 13;
     private static final int REQUEST_SEND = 14;
-    private static final int REQUEST_PERMISSION = 15;
+    private static final int REQUEST_REMOVE_ATTACHMENTS = 15;
 
     private static ExecutorService executor = Helper.getBackgroundExecutor(1, "compose");
 
@@ -357,6 +360,7 @@ public class FragmentCompose extends FragmentBase {
         ibBccAdd = view.findViewById(R.id.ibBccAdd);
         etSubject = view.findViewById(R.id.etSubject);
         ibCcBcc = view.findViewById(R.id.ibCcBcc);
+        ibRemoveAttachments = view.findViewById(R.id.ibRemoveAttachments);
         rvAttachment = view.findViewById(R.id.rvAttachment);
         tvNoInternetAttachments = view.findViewById(R.id.tvNoInternetAttachments);
         tvDsn = view.findViewById(R.id.tvDsn);
@@ -591,12 +595,17 @@ public class FragmentCompose extends FragmentBase {
         etBody.addTextChangedListener(new TextWatcher() {
             private Integer added = null;
             private Integer removed = null;
+            private Integer replaced = null;
 
             @Override
             public void beforeTextChanged(CharSequence text, int start, int count, int after) {
                 if (count == 1 && after == 0 && (start == 0 || text.charAt(start) == '\n')) {
                     Log.i("Removed=" + start);
                     removed = start;
+                }
+                if (BuildConfig.DEBUG && count - after == 1) {
+                    replaced = start + after;
+                    Log.i("Replaced=" + replaced);
                 }
             }
 
@@ -734,6 +743,22 @@ public class FragmentCompose extends FragmentBase {
                     StyleHelper.renumber(text, true, etBody.getContext());
 
                     removed = null;
+                }
+
+                if (replaced != null && replaced > 0) {
+                    StyleHelper.TranslatedSpan[] nc =
+                            text.getSpans(replaced - 1, replaced, StyleHelper.TranslatedSpan.class);
+                    if (nc != null)
+                        for (StyleHelper.TranslatedSpan p : nc) {
+                            int start = text.getSpanStart(p);
+                            int end = text.getSpanEnd(p);
+                            if (end == replaced) {
+                                text.delete(start, end);
+                                text.removeSpan(p);
+                            }
+                        }
+
+                    replaced = null;
                 }
 
                 if (lp != null)
@@ -1186,6 +1211,20 @@ public class FragmentCompose extends FragmentBase {
 
         grpAddresses.setVisibility(cc_bcc ? View.VISIBLE : View.GONE);
 
+        ibRemoveAttachments.setVisibility(View.GONE);
+        ibRemoveAttachments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle args = new Bundle();
+                args.putString("question", getString(R.string.title_ask_delete_attachments));
+
+                FragmentDialogAsk fragment = new FragmentDialogAsk();
+                fragment.setArguments(args);
+                fragment.setTargetFragment(FragmentCompose.this, REQUEST_REMOVE_ATTACHMENTS);
+                fragment.show(getParentFragmentManager(), "compose:discard");
+            }
+        });
+
         rvAttachment.setHasFixedSize(false);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rvAttachment.setLayoutManager(llm);
@@ -1346,7 +1385,7 @@ public class FragmentCompose extends FragmentBase {
         outState.putParcelable("fair:pickUri", pickUri);
 
         // Focus was lost at this point
-        outState.putInt("fair:selection", etBody.getSelectionStart());
+        outState.putInt("fair:selection", etBody == null ? 0 : etBody.getSelectionStart());
 
         super.onSaveInstanceState(outState);
     }
@@ -1561,8 +1600,7 @@ public class FragmentCompose extends FragmentBase {
         menu.findItem(R.id.menu_zoom).setEnabled(state == State.LOADED);
         menu.findItem(R.id.menu_media).setEnabled(state == State.LOADED);
         menu.findItem(R.id.menu_compact).setEnabled(state == State.LOADED);
-        menu.findItem(R.id.menu_contact_group).setEnabled(
-                state == State.LOADED && hasPermission(Manifest.permission.READ_CONTACTS));
+        menu.findItem(R.id.menu_contact_group).setEnabled(state == State.LOADED);
         menu.findItem(R.id.menu_manage_local_contacts).setEnabled(state == State.LOADED);
         menu.findItem(R.id.menu_answer_insert).setEnabled(state == State.LOADED);
         menu.findItem(R.id.menu_answer_create).setEnabled(state == State.LOADED);
@@ -1878,8 +1916,11 @@ public class FragmentCompose extends FragmentBase {
     }
 
     private void onMenuManageLocalContacts() {
+        FragmentContacts fragment = new FragmentContacts();
+        fragment.setArguments(new Bundle()); // all accounts
+
         FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.content_frame, new FragmentContacts()).addToBackStack("contacts");
+        fragmentTransaction.replace(R.id.content_frame, fragment).addToBackStack("contacts");
         fragmentTransaction.commit();
     }
 
@@ -2108,9 +2149,21 @@ public class FragmentCompose extends FragmentBase {
                 args.putString("text", text);
 
                 new SimpleTask<DeepL.Translation>() {
+                    private Object highlightSpan;
+
                     @Override
                     protected void onPreExecute(Bundle args) {
+                        int textColorHighlight = Helper.resolveColor(getContext(), android.R.attr.textColorHighlight);
+                        highlightSpan = new BackgroundColorSpan(textColorHighlight);
+                        etBody.getText().setSpan(highlightSpan, paragraph.first, paragraph.second,
+                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE | Spanned.SPAN_COMPOSING);
                         ToastEx.makeText(context, R.string.title_translating, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    protected void onPostExecute(Bundle args) {
+                        if (highlightSpan != null)
+                            etBody.getText().removeSpan(highlightSpan);
                     }
 
                     @Override
@@ -2154,6 +2207,8 @@ public class FragmentCompose extends FragmentBase {
                          */
                         int len = 2 + translation.translated_text.length();
                         edit.insert(paragraph.second, "\n\n" + translation.translated_text);
+                        StyleHelper.markAsTranslated(edit, paragraph.second, paragraph.second + len);
+
                         etBody.setSelection(paragraph.second + len);
 
                         boolean small = prefs.getBoolean("deepl_small", false);
@@ -2177,6 +2232,7 @@ public class FragmentCompose extends FragmentBase {
 
                     @Override
                     protected void onException(Bundle args, Throwable ex) {
+                        etBody.setSelection(paragraph.second);
                         Throwable exex = new Throwable("DeepL", ex);
                         Log.unexpectedError(getParentFragmentManager(), exex, false);
                     }
@@ -2519,6 +2575,10 @@ public class FragmentCompose extends FragmentBase {
                         onAction(R.id.action_send, extras, "sendnow");
                     }
                     break;
+                case REQUEST_REMOVE_ATTACHMENTS:
+                    if (resultCode == RESULT_OK)
+                        onRemoveAttachments();
+                    break;
             }
         } catch (Throwable ex) {
             Log.e(ex);
@@ -2654,7 +2714,7 @@ public class FragmentCompose extends FragmentBase {
                         pickRequest = requestCode;
                         pickUri = uri;
                         String permission = Manifest.permission.READ_CONTACTS;
-                        requestPermissions(new String[]{permission}, REQUEST_PERMISSION);
+                        requestPermissions(new String[]{permission}, REQUEST_PERMISSIONS);
                     } catch (Throwable ex1) {
                         Log.unexpectedError(getParentFragmentManager(), ex1);
                     }
@@ -2666,10 +2726,11 @@ public class FragmentCompose extends FragmentBase {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (pickUri == null)
+            return;
         for (int i = 0; i < permissions.length; i++)
             if (Manifest.permission.READ_CONTACTS.equals(permissions[i]))
-                if (pickUri != null &&
-                        grantResults[i] == PackageManager.PERMISSION_GRANTED)
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED)
                     onPickContact(pickRequest, new Intent().setData(pickUri));
     }
 
@@ -2845,8 +2906,8 @@ public class FragmentCompose extends FragmentBase {
             @Override
             protected void onException(Bundle args, Throwable ex) {
                 // External app sending absolute file
-                if (ex instanceof SecurityException)
-                    handleFileShare();
+                if (ex instanceof NoStreamException)
+                    ((NoStreamException) ex).report(getActivity());
                 else if (ex instanceof FileNotFoundException ||
                         ex instanceof IllegalArgumentException ||
                         ex instanceof IllegalStateException) {
@@ -2940,7 +3001,10 @@ public class FragmentCompose extends FragmentBase {
 
             @Override
             protected void onException(Bundle args, Throwable ex) {
-                Log.unexpectedError(getParentFragmentManager(), ex);
+                if (ex instanceof NoStreamException)
+                    ((NoStreamException) ex).report(getActivity());
+                else
+                    Log.unexpectedError(getParentFragmentManager(), ex);
             }
         }.execute(this, args, "compose:shared");
     }
@@ -3717,7 +3781,8 @@ public class FragmentCompose extends FragmentBase {
     }
 
     private void onContactGroupSelected(Bundle args) {
-        if (args.getInt("target") > 0)
+        final int target = args.getInt("target");
+        if (target > 0)
             grpAddresses.setVisibility(View.VISIBLE);
 
         args.putString("to", etTo.getText().toString().trim());
@@ -3730,42 +3795,52 @@ public class FragmentCompose extends FragmentBase {
                 long id = args.getLong("id");
                 int target = args.getInt("target");
                 long group = args.getLong("group");
+                String gname = args.getString("name");
                 String to = args.getString("to");
                 String cc = args.getString("cc");
                 String bcc = args.getString("bcc");
 
-                EntityLog.log(context, "Selected group=" + group);
+                EntityLog.log(context, "Selected group=" + group + "/" + gname);
 
                 List<Address> selected = new ArrayList<>();
 
-                try (Cursor cursor = context.getContentResolver().query(
-                        ContactsContract.Data.CONTENT_URI,
-                        new String[]{ContactsContract.Data.CONTACT_ID},
-                        ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "= ?" + " AND "
-                                + ContactsContract.CommonDataKinds.GroupMembership.MIMETYPE + "='"
-                                + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'",
-                        new String[]{String.valueOf(group)}, null)) {
-                    while (cursor != null && cursor.moveToNext()) {
-                        try (Cursor contact = getContext().getContentResolver().query(
-                                ContactsContract.CommonDataKinds.Email.CONTENT_URI,
-                                new String[]{
-                                        ContactsContract.Contacts.DISPLAY_NAME,
-                                        ContactsContract.CommonDataKinds.Email.DATA
-                                },
-                                ContactsContract.Data.CONTACT_ID + " = ?",
-                                new String[]{cursor.getString(0)},
-                                null)) {
-                            if (contact != null && contact.moveToNext()) {
-                                String name = contact.getString(0);
-                                String email = contact.getString(1);
-                                Address address = new InternetAddress(email, name, StandardCharsets.UTF_8.name());
-                                EntityLog.log(context, "Selected group=" + group +
-                                        " address=" + MessageHelper.formatAddresses(new Address[]{address}));
-                                selected.add(address);
+                if (group < 0) {
+                    DB db = DB.getInstance(context);
+                    List<EntityContact> contacts = db.contact().getContacts(gname);
+                    if (contacts != null)
+                        for (EntityContact contact : contacts) {
+                            Address address = new InternetAddress(contact.email, contact.name, StandardCharsets.UTF_8.name());
+                            selected.add(address);
+                        }
+                } else
+                    try (Cursor cursor = context.getContentResolver().query(
+                            ContactsContract.Data.CONTENT_URI,
+                            new String[]{ContactsContract.Data.CONTACT_ID},
+                            ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "= ?" + " AND "
+                                    + ContactsContract.CommonDataKinds.GroupMembership.MIMETYPE + "='"
+                                    + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE + "'",
+                            new String[]{String.valueOf(group)}, null)) {
+                        while (cursor != null && cursor.moveToNext()) {
+                            try (Cursor contact = getContext().getContentResolver().query(
+                                    ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+                                    new String[]{
+                                            ContactsContract.Contacts.DISPLAY_NAME,
+                                            ContactsContract.CommonDataKinds.Email.DATA
+                                    },
+                                    ContactsContract.Data.CONTACT_ID + " = ?",
+                                    new String[]{cursor.getString(0)},
+                                    null)) {
+                                if (contact != null && contact.moveToNext()) {
+                                    String name = contact.getString(0);
+                                    String email = contact.getString(1);
+                                    Address address = new InternetAddress(email, name, StandardCharsets.UTF_8.name());
+                                    EntityLog.log(context, "Selected group=" + group +
+                                            " address=" + MessageHelper.formatAddresses(new Address[]{address}));
+                                    selected.add(address);
+                                }
                             }
                         }
                     }
-                }
 
                 EntityMessage draft;
                 DB db = DB.getInstance(context);
@@ -3814,11 +3889,27 @@ public class FragmentCompose extends FragmentBase {
 
             @Override
             protected void onExecuted(Bundle args, EntityMessage draft) {
-                if (draft != null) {
-                    etTo.setText(MessageHelper.formatAddressesCompose(draft.to));
-                    etCc.setText(MessageHelper.formatAddressesCompose(draft.cc));
-                    etBcc.setText(MessageHelper.formatAddressesCompose(draft.bcc));
-                }
+                if (draft == null)
+                    return;
+
+                EditText edit;
+                String text;
+
+                if (target == 0) {
+                    edit = etTo;
+                    text = MessageHelper.formatAddressesCompose(draft.to);
+                } else if (target == 1) {
+                    edit = etCc;
+                    text = MessageHelper.formatAddressesCompose(draft.cc);
+                } else if (target == 2) {
+                    edit = etBcc;
+                    text = MessageHelper.formatAddressesCompose(draft.bcc);
+                } else
+                    return;
+
+                edit.setText(text);
+                edit.setSelection(text.length());
+                edit.requestFocus();
             }
 
             @Override
@@ -3838,6 +3929,28 @@ public class FragmentCompose extends FragmentBase {
 
     private void onActionDiscardConfirmed() {
         onAction(R.id.action_delete, "delete");
+    }
+
+    private void onRemoveAttachments() {
+        Bundle args = new Bundle();
+        args.putLong("id", working);
+
+        new SimpleTask<Void>() {
+            @Override
+            protected Void onExecute(Context context, Bundle args) throws Throwable {
+                long id = args.getLong("id");
+
+                DB db = DB.getInstance(context);
+                db.attachment().deleteAttachments(id);
+
+                return null;
+            }
+
+            @Override
+            protected void onException(Bundle args, Throwable ex) {
+                Log.unexpectedError(getParentFragmentManager(), ex);
+            }
+        }.execute(FragmentCompose.this, args, "attachments:remove");
     }
 
     private void onExit() {
@@ -3923,11 +4036,7 @@ public class FragmentCompose extends FragmentBase {
             Context context, long id, Uri uri, boolean image, int resize, boolean privacy) throws IOException {
         Log.w("Add attachment uri=" + uri + " image=" + image + " resize=" + resize + " privacy=" + privacy);
 
-        if (!"content".equals(uri.getScheme()) &&
-                !Helper.hasPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            Log.w("Add attachment uri=" + uri);
-            throw new SecurityException("Add attachment with file scheme");
-        }
+        NoStreamException.check(uri, context);
 
         EntityAttachment attachment = new EntityAttachment();
         UriInfo info = getInfo(uri, context);
@@ -3974,7 +4083,7 @@ public class FragmentCompose extends FragmentBase {
                 os = new FileOutputStream(file);
 
                 if (is == null)
-                    throw new IOException("Content provider crashed");
+                    throw new FileNotFoundException(uri.toString());
 
                 byte[] buffer = new byte[Helper.BUFFER_SIZE];
                 for (int len = is.read(buffer); len != -1; len = is.read(buffer)) {
@@ -5138,6 +5247,7 @@ public class FragmentCompose extends FragmentBase {
                                 }
                             });
 
+                            ibRemoveAttachments.setVisibility(attachments.size() > 2 ? View.VISIBLE : View.GONE);
                             grpAttachments.setVisibility(attachments.size() > 0 ? View.VISIBLE : View.GONE);
 
                             boolean downloading = false;
@@ -5310,8 +5420,8 @@ public class FragmentCompose extends FragmentBase {
             // External app sending absolute file
             if (ex instanceof MessageRemovedException)
                 finish();
-            else if (ex instanceof SecurityException)
-                handleFileShare();
+            if (ex instanceof NoStreamException)
+                ((NoStreamException) ex).report(getActivity());
             else if (ex instanceof FileNotFoundException ||
                     ex instanceof IllegalArgumentException ||
                     ex instanceof IllegalStateException)
@@ -5334,18 +5444,6 @@ public class FragmentCompose extends FragmentBase {
                 Log.unexpectedError(getParentFragmentManager(), ex);
         }
     }.setExecutor(executor);
-
-    private void handleFileShare() {
-        Snackbar sb = Snackbar.make(view, R.string.title_no_stream, Snackbar.LENGTH_INDEFINITE)
-                .setGestureInsetBottomIgnored(true);
-        sb.setAction(R.string.title_info, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Helper.viewFAQ(v.getContext(), 49);
-            }
-        });
-        sb.show();
-    }
 
     private SimpleTask<EntityMessage> actionLoader = new SimpleTask<EntityMessage>() {
         @Override
@@ -5671,7 +5769,8 @@ public class FragmentCompose extends FragmentBase {
                                 if (attachment.isInline() && attachment.isImage()) {
                                     Log.i("Converting to attachment cid=" + attachment.cid);
                                     attachment.disposition = Part.ATTACHMENT;
-                                    db.attachment().setDisposition(attachment.id, attachment.disposition);
+                                    attachment.cid = null;
+                                    db.attachment().setDisposition(attachment.id, attachment.disposition, attachment.cid);
                                     dirty = true;
                                 }
                         }
@@ -5941,6 +6040,17 @@ public class FragmentCompose extends FragmentBase {
                             outbox.id = db.folder().insertFolder(outbox);
                         }
 
+                        // Delay sending message
+                        if (draft.ui_snoozed == null && send_delayed != 0) {
+                            if (extras.getBoolean("now"))
+                                draft.ui_snoozed = null;
+                            else
+                                draft.ui_snoozed = new Date().getTime() + send_delayed * 1000L;
+                        }
+
+                        if (draft.ui_snoozed != null)
+                            draft.received = draft.ui_snoozed;
+
                         // Copy message to outbox
                         draft.id = null;
                         draft.folder = outbox.id;
@@ -5953,15 +6063,6 @@ public class FragmentCompose extends FragmentBase {
                         // Move attachments
                         for (EntityAttachment attachment : attachments)
                             db.attachment().setMessage(attachment.id, draft.id);
-
-                        // Delay sending message
-                        if (draft.ui_snoozed == null && send_delayed != 0) {
-                            if (extras.getBoolean("now"))
-                                draft.ui_snoozed = null;
-                            else
-                                draft.ui_snoozed = new Date().getTime() + send_delayed * 1000L;
-                            db.message().setMessageSnoozed(draft.id, draft.ui_snoozed);
-                        }
 
                         // Send message
                         if (draft.ui_snoozed == null)
@@ -6652,8 +6753,6 @@ public class FragmentCompose extends FragmentBase {
             int focussed = args.getInt("focussed");
 
             final Context context = getContext();
-            final ContentResolver resolver = context.getContentResolver();
-
             View dview = LayoutInflater.from(context).inflate(R.layout.dialog_contact_group, null);
             final ImageButton ibInfo = dview.findViewById(R.id.ibInfo);
             final Spinner spGroup = dview.findViewById(R.id.spGroup);
@@ -6666,61 +6765,83 @@ public class FragmentCompose extends FragmentBase {
                 }
             });
 
-            final String[] projection = new String[]{
-                    ContactsContract.Groups._ID,
-                    ContactsContract.Groups.TITLE,
-                    ContactsContract.Groups.SUMMARY_COUNT,
-                    ContactsContract.Groups.ACCOUNT_NAME,
-                    ContactsContract.Groups.ACCOUNT_TYPE,
-            };
-
-            Cursor groups;
-            try {
-                groups = resolver.query(
-                        ContactsContract.Groups.CONTENT_SUMMARY_URI,
-                        projection,
-                        // ContactsContract.Groups.GROUP_VISIBLE + " = 1" + " AND " +
-                        ContactsContract.Groups.DELETED + " = 0" +
-                                " AND " + ContactsContract.Groups.SUMMARY_COUNT + " > 0",
-                        null,
-                        ContactsContract.Groups.TITLE
-                );
-            } catch (SecurityException ex) {
-                Log.w(ex);
-                groups = new MatrixCursor(projection);
-            }
-
-            SimpleCursorAdapter adapter = new SimpleCursorAdapter(
-                    context,
-                    R.layout.spinner_contact_group,
-                    groups,
-                    new String[]{ContactsContract.Groups.TITLE, ContactsContract.Groups.ACCOUNT_NAME},
-                    new int[]{R.id.tvGroup, R.id.tvAccount},
-                    0);
-
-            final NumberFormat NF = NumberFormat.getInstance();
-
-            adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            new SimpleTask<Cursor>() {
                 @Override
-                public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-                    if (view.getId() == R.id.tvGroup) {
-                        String title = cursor.getString(1);
-                        if (TextUtils.isEmpty(title))
-                            title = "-";
-                        int count = cursor.getInt(2);
-                        ((TextView) view).setText(context.getString(R.string.title_name_count, title, NF.format(count)));
-                        return true;
-                    } else if (view.getId() == R.id.tvAccount && BuildConfig.DEBUG) {
-                        String account = cursor.getString(3);
-                        String type = cursor.getString(4);
-                        ((TextView) view).setText(account + (BuildConfig.DEBUG ? "/" + type : ""));
-                        return true;
-                    } else
-                        return false;
-                }
-            });
+                protected Cursor onExecute(Context context, Bundle args) {
+                    final String[] projection = new String[]{
+                            ContactsContract.Groups._ID,
+                            ContactsContract.Groups.TITLE,
+                            ContactsContract.Groups.SUMMARY_COUNT,
+                            ContactsContract.Groups.ACCOUNT_NAME,
+                            ContactsContract.Groups.ACCOUNT_TYPE,
+                    };
 
-            spGroup.setAdapter(adapter);
+                    Cursor contacts = new MatrixCursor(projection);
+                    if (Helper.hasPermission(context, Manifest.permission.READ_CONTACTS))
+                        try {
+                            ContentResolver resolver = context.getContentResolver();
+                            contacts = resolver.query(
+                                    ContactsContract.Groups.CONTENT_SUMMARY_URI,
+                                    projection,
+                                    // ContactsContract.Groups.GROUP_VISIBLE + " = 1" + " AND " +
+                                    ContactsContract.Groups.DELETED + " = 0" +
+                                            " AND " + ContactsContract.Groups.SUMMARY_COUNT + " > 0",
+                                    null,
+                                    ContactsContract.Groups.TITLE
+                            );
+                        } catch (SecurityException ex) {
+                            Log.w(ex);
+                        }
+
+                    DB db = DB.getInstance(context);
+                    Cursor local = db.contact().getGroups(
+                            null,
+                            context.getString(R.string.app_name),
+                            BuildConfig.APPLICATION_ID);
+
+                    return new MergeCursor(new Cursor[]{contacts, local});
+                }
+
+                @Override
+                protected void onExecuted(Bundle args, Cursor cursor) {
+                    SimpleCursorAdapter adapter = new SimpleCursorAdapter(
+                            context,
+                            R.layout.spinner_contact_group,
+                            cursor,
+                            new String[]{ContactsContract.Groups.TITLE, ContactsContract.Groups.ACCOUNT_NAME},
+                            new int[]{R.id.tvGroup, R.id.tvAccount},
+                            0);
+
+                    final NumberFormat NF = NumberFormat.getInstance();
+
+                    adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+                        @Override
+                        public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                            if (view.getId() == R.id.tvGroup) {
+                                String title = cursor.getString(1);
+                                if (TextUtils.isEmpty(title))
+                                    title = "-";
+                                int count = cursor.getInt(2);
+                                ((TextView) view).setText(context.getString(R.string.title_name_count, title, NF.format(count)));
+                                return true;
+                            } else if (view.getId() == R.id.tvAccount) {
+                                String account = cursor.getString(3);
+                                String type = cursor.getString(4);
+                                ((TextView) view).setText(account + (BuildConfig.DEBUG ? "/" + type : ""));
+                                return true;
+                            } else
+                                return false;
+                        }
+                    });
+
+                    spGroup.setAdapter(adapter);
+                }
+
+                @Override
+                protected void onException(Bundle args, Throwable ex) {
+                    Log.unexpectedError(getParentFragmentManager(), ex);
+                }
+            }.execute(this, new Bundle(), "compose:groups");
 
             spTarget.setSelection(focussed);
 
@@ -6733,11 +6854,13 @@ public class FragmentCompose extends FragmentBase {
                             Cursor cursor = (Cursor) spGroup.getSelectedItem();
                             if (target != INVALID_POSITION && cursor != null) {
                                 long group = cursor.getLong(0);
+                                String name = cursor.getString(1);
 
                                 Bundle args = getArguments();
                                 args.putLong("id", working);
                                 args.putInt("target", target);
                                 args.putLong("group", group);
+                                args.putString("name", name);
 
                                 sendResult(RESULT_OK);
                             } else
@@ -7482,6 +7605,7 @@ public class FragmentCompose extends FragmentBase {
 
         if (TextUtils.isEmpty(result.type) ||
                 "*/*".equals(result.type) ||
+                "application/*".equals(result.type) ||
                 "application/octet-stream".equals(result.type))
             result.type = Helper.guessMimeType(result.name);
 

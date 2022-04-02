@@ -82,12 +82,16 @@
     </plurals>
     <string name="title_ask_spam_who">Tratează mesajul de la %1$s ca spam?</string>
     <string name="title_junk_hint">Furnizorul dumneavoastră de e-mail este responsabil pentru filtrarea spam-ului. O aplicație de e-mail nu are toate datele necesare pentru a face acest lucru în mod fiabil.</string>
+    <string name="title_junk_pop_hint">        Mesajele de la expeditorii blocați nu vor fi descărcate.
+        Dacă opțiunea \"Lasă mesajele pe server\" nu este activată, aceste mesaje vor fi pierdute definitiv!
+    </string>
     <string name="title_block">Blochează %1$s</string>
     <string name="title_block_sender">Blochează expeditor</string>
     <string name="title_block_sender_domain">Blocați domeniul \"%1$s</string>
     <string name="title_block_sender_hint">        Blocarea unui expeditor este o funcție gratuită.
         Blocarea unui domeniu de expeditor utilizează reguli de filtrare, ceea ce reprezintă o caracteristică profesională.
     </string>
+    <string name="title_blocked_senders">Expeditori blocați</string>
     <string name="title_junk_filter">Utilizați filtrul de spam local</string>
     <string name="title_junk_filter_hint">Acest lucru poate crește utilizarea bateriei și marchează incorect mesajele ca spam</string>
     <string name="title_junk_blocklist">Utilizați listele de blocare a spam-ului</string>
@@ -165,7 +169,6 @@
     <string name="title_setup_gmail_password">Vreau să autorizez un cont cu o parolă</string>
     <string name="title_setup_office_auth">Eroarea \'Autentificare eșuată\' poate fi cauzată de dezactivarea administrativă a IMAP/SMTP</string>
     <string name="title_setup_oauth_rationale">Autorizare acces la contul %1$s</string>
-    <string name="title_setup_oauth_update">Autorizațî din nou contul existent</string>
     <string name="title_setup_oauth_updated">Autorizarea contului a fost actualizată</string>
     <string name="title_setup_oauth_authorize">Autorizare</string>
     <string name="title_setup_select_account">Selectare cont</string>
@@ -190,14 +193,13 @@
     <string name="title_setup_permissions_explanation">Permisiunile de contact sunt necesare pentru a căuta informații de contact și pentru a sugera contacte</string>
     <string name="title_setup_permission_import_contacts">Cum pot importa contacte?</string>
     <string name="title_setup_doze">Dezactivează optimizarea bateriei</string>
-    <string name="title_setup_doze_remark">Pentru a trimite și primi e-mail în mod fiabil</string>
+    <string name="title_setup_doze_remark">Pentru a trimite și a primi e-mailuri în mod fiabil în fundal</string>
     <string name="title_setup_doze_explanation">Optimizările bateriei trebuie să fie dezactivate pentru aplicație pentru a asigura trimiterea și primirea sigură a mesajelor în fundal</string>
     <string name="title_setup_doze_hint">Deși poate părea contradictoriu, dezactivarea optimizărilor bateriei pentru această aplicație va duce la o utilizare mai redusă a bateriei</string>
     <string name="title_setup_doze_instructions">În următorul dialog Android schimbați opțiunea \"Nu se optimizează\" în \"Toate aplicațiile\", selectați această aplicație și selectați \"Nu se optimizează\"</string>
     <string name="title_setup_doze_battery">Utilizare intensă a bateriei?</string>
     <string name="title_setup_doze_stopped">Sincronizarea e oprită?</string>
     <string name="title_setup_doze_device">Acest lucru este probabil necesar pentru acest dispozitiv</string>
-    <string name="title_setup_doze_12">Mesajele Push sunt dezactivate</string>
     <string name="title_setup_alarm_12">Aplicația nu va funcționa</string>
     <string name="title_setup_inexact">Alarme &amp; memento-urile sunt dezactivate</string>
     <string name="title_setup_background">Restricțiile de fundal sunt activate</string>
@@ -274,6 +276,8 @@
     <string name="title_setup_reset_full">Afișați mesajele originale</string>
     <string name="title_setup_reset_images">Afișare imagini</string>
     <string name="title_setup_reset_links">Confirmați link-urile</string>
+    <string name="title_check_gmail_oauth">Conturile dumneavoastră Gmail vor continua să funcționeze și după 30 mai 2022</string>
+    <string name="title_check_gmail_password">Este posibil ca unele dintre conturile tale de Gmail să nu mai funcționeze după 30 mai 2022</string>
     <string name="title_advanced_hint_title">Opțiuni și mai avansate</string>
     <string name="title_advanced_hint_message">        Navigați la opțiunile mai avansate.        Toate opțiunile au utilizat în mod obișnuit valori standard, pe care nu trebuie să o schimbați decât dacă aveți o preferință diferită.
     </string>
@@ -382,6 +386,7 @@
     <string name="title_advanced_close_pane">Restrângerea unui rând sau a unei coloane la închiderea unei conversații</string>
     <string name="title_advanced_column_width">Lățimea coloanei de mesaje: %1$s %%</string>
     <string name="title_advanced_nav_options">Afișați opțiunile din meniul de navigare</string>
+    <string name="title_advanced_nav_categories">Afișați categoriile de conturi în meniul de navigare</string>
     <string name="title_advanced_nav_pin">Meniul de navigare Pin</string>
     <string name="title_advanced_nav_hide_title">Ascundeți opțiunile din meniul de navigare?</string>
     <string name="title_advanced_nav_hide_message">Puteți activa din nou opțiunile în setările de afișare</string>
@@ -440,6 +445,7 @@
     <string name="title_advanced_preview_italic">Arată previzualizare mesaj cu aldin</string>
     <string name="title_advanced_preview_lines">Numărul de linii de previzualizat</string>
     <string name="title_advanced_addresses">Implicit arată detaliile adreselor</string>
+    <string name="title_advanced_unzip">Afișați conținutul atașamentelor comprimate</string>
     <string name="title_advanced_attachments_alt">Arată atașamentele după textul mesajului</string>
     <string name="title_advanced_thumbnails">Arată miniaturile imaginilor după textul mesajului</string>
     <string name="title_advanced_message_text_zoom2">Zoom implicit al textului mesajului: %1$s %%</string>
@@ -586,6 +592,7 @@
     </string>
     <string name="title_advanced_power_menu">Adăugați acțiuni în meniul de alimentare Android</string>
     <string name="title_advanced_external_search">Permite altor aplicații să caute în mesaje</string>
+    <string name="title_advanced_sort_answers">Sortați șabloanele de răspuns în funcție de frecvența de utilizare</string>
     <string name="title_advanced_shortcuts">Arată contactele utilizate frecvent în meniul de partajare Android</string>
     <string name="title_advanced_fts">Creează index de căutare</string>
     <string name="title_advanced_fts_indexed">%1$d / %2$d mesaje indexate (%3$s)</string>
@@ -665,6 +672,7 @@
     <string name="title_advanced_monospaced_pre_hint">Mesajele care conțin doar text simplu vor fi considerate ca fiind preformatate</string>
     <string name="title_advanced_placeholders_hint">Acest lucru se aplică numai mesajelor reformatate</string>
     <string name="title_advanced_inline_hint">Imaginile integrate sunt cele include în mesaj</string>
+    <string name="compressed">Conținutul fișierelor comprimate (%1$s) cu mai mult de %2$s fișiere sau cu fișiere mai mari de %3$s nu va fi afișat</string>
     <string name="title_advanced_parse_classes_hint">Acest lucru va afișa cu mai multă precizie mesajele, dar posibil cu o întârziere</string>
     <string name="title_advanced_language_detection_hint">Detectarea limbii depinde de producătorul dispozitivului</string>
     <string name="title_advanced_autoexpand_hint">Atunci când este doar un mesaj sau doar un mesaj necitit într-o conversație</string>
@@ -850,6 +858,9 @@
     <string name="title_delete_channel">Șterge canal de notificare</string>
     <string name="title_insert_contact">Adaugă contact</string>
     <string name="title_edit_contact">Editare contact</string>
+    <string name="title_contact_email">E-mail</string>
+    <string name="title_contact_name">Nume</string>
+    <string name="title_contact_group">Grup</string>
     <string name="title_import_contacts">Importă vCards</string>
     <string name="title_export_contacts">Exportați vCards</string>
     <string name="title_create_sub_folder">Creează sub-dosar</string>
@@ -865,7 +876,7 @@
     <string name="title_delete_operation_flag">Operațiuni de marcare</string>
     <string name="title_delete_operation_delete">Operațiuni de ștergere</string>
     <string name="title_delete_operation_deleted">%1$d operațiuni șterse</string>
-    <string name="title_delete_contacts">Ștergeți toate contactele locale?</string>
+    <string name="title_delete_contacts">Ștergeți contactele locale vizibile?</string>
     <string name="title_no_operations">Nici o operațiune în așteptare</string>
     <string name="title_check_operations">Verificarea operațiunilor</string>
     <string name="title_hint_operations">Ștergerea de operațiuni poate duce la dispariția mesajelor și la probleme de sincronizare</string>
@@ -1024,7 +1035,8 @@
     <string name="title_no_recorder">Nu este disponibilă o aplicație de înregistrat audio</string>
     <string name="title_no_camera">Nu este disponibilă o aplicație de fotografiat</string>
     <string name="title_no_saf">Nu se poate accesa stocarea locală</string>
-    <string name="title_no_stream">O aplicație invechită a trimis calea fișierului în locul unui flux de date</string>
+    <string name="title_no_stream">FairEmail nu are permisiunea de a citi direct acest fișier</string>
+    <string name="title_no_stream_help">Acest lucru poate fi rezolvat prin selectarea fișierului cu o aplicație mai modernă de gestionare a fișierelor sau prin acordarea permisiunii de citire a fișierelor</string>
     <string name="title_no_internet">Nu există o conexiune viabilă la Internet</string>
     <string name="title_no_connection">Conectare la unul sau mai multe conturi &#8230;</string>
     <string name="title_no_folder">Dosarul nu există</string>
@@ -1050,6 +1062,7 @@
     <string name="title_ask_delete_accept">Înțeleg că ștergerea permanentă a mesajelor este ireversibilă</string>
     <string name="title_ask_delete_answer">Se șterge permanent șablonul de răspuns?</string>
     <string name="title_ask_delete_rule">Ștergeți regula definitiv?</string>
+    <string name="title_ask_delete_attachments">Eliminați toate atașamentele?</string>
     <string name="title_ask_discard">Renunțați la ciornă?</string>
     <string name="title_ask_show_html">Vizualizarea mesajului original poate duce la divulgarea de informații confidențiale</string>
     <string name="title_ask_show_html_remark">Afișarea mesajului original pe un fundal închis nu este posibilă pentru că imaginile și textul închise la culoare ar putea sa nu se vadă</string>
@@ -1251,6 +1264,7 @@
     <string name="title_search_in_junk">În spam</string>
     <string name="title_search_with_before">Înainte de</string>
     <string name="title_search_with_after">După</string>
+    <string name="title_search_device_first">Căutați mai întâi pe dispozitiv</string>
     <string name="title_search_flag_unseen">necitit</string>
     <string name="title_search_flag_flagged">marcat</string>
     <string name="title_search_flag_hidden">ascuns</string>
@@ -1262,6 +1276,7 @@
     <string name="title_search_device">Căutare pe dispozitiv</string>
     <string name="title_search_server">Căutare pe server</string>
     <string name="title_search_in">Căutare în</string>
+    <string name="title_search_delete">Ștergeți căutarea salvată?</string>
     <string name="title_sort_on">Sortare</string>
     <string name="title_sort_on_time">Dată</string>
     <string name="title_sort_on_unread">Necitit</string>
@@ -1307,6 +1322,7 @@
     <string name="title_answer_group">Grup șablon (opțional)</string>
     <string name="title_answer_standard">Implicit</string>
     <string name="title_answer_favorite">Favorit</string>
+    <string name="title_answer_snippet">Fragment</string>
     <string name="title_answer_receipt">Utilizați ca și chitanță de citire</string>
     <string name="title_answer_hide">Ascunde din meniuri</string>
     <string name="title_answer_text">Text șablon</string>
@@ -1835,5 +1851,11 @@
         <item>Mediu</item>
         <item>Mare</item>
         <item>Foarte mare</item>
+    </string-array>
+    <string-array name="contactTypes">
+        <item>Destinatar</item>
+        <item>Expeditor</item>
+        <item>Blocat</item>
+        <item>Nu este blocat</item>
     </string-array>
 </resources>

@@ -283,7 +283,7 @@ Fonts, sizes, colors, etc should be material design whenever possible.
 * [(126) Can message previews be sent to my wearable?](#user-content-faq126)
 * [(127) How can I fix 'Syntactically invalid HELO argument(s)'?](#user-content-faq127)
 * [(128) How can I reset asked questions, for example to show images?](#user-content-faq128)
-* [(129) Are ProtonMail, Tutanota supported?](#user-content-faq129)
+* [(129) Are ProtonMail, Tutanota, CTemplar supported?](#user-content-faq129)
 * [(130) What does message error ... mean?](#user-content-faq130)
 * [(131) Can you change the direction for swiping to previous/next message?](#user-content-faq131)
 * [(132) Why are new message notifications silent?](#user-content-faq132)
@@ -333,6 +333,7 @@ Fonts, sizes, colors, etc should be material design whenever possible.
 * [(176) When will a message be considered safely transported?](#user-content-faq176)
 * [(177) What does 'Sensitivity' mean?](#user-content-faq177)
 * [(178) Why are widgets not updating?](#user-content-faq178)
+* [(179) What are reply templates?](#user-content-faq179)
 
 [I have another question.](#user-content-get-support)
 
@@ -578,21 +579,33 @@ Some people ask:
 
 &#x1F30E; [Google Translate](https://translate.google.com/translate?sl=en&u=https://github.com/M66B/FairEmail/blob/master/FAQ.md%23user-content-faq6)
 
-<hr />
-
-**Important**: using your account password [won't be possible anymore from May 30, 2022](https://support.google.com/accounts/answer/6010255).
-
-How to fix:
-
-* Go to the *Settings* via the navigation menu (left side menu)
-* Tap on the *Wizard* button and select *Gmail (OAuth)*
-* Tick the checkbox to authenticate an existing account (else you'll create a new account!)
-* Fill in the fields and follow the steps
-* Repeat for each Gmail account
-
-Alternatively, you can use an app password, please see below.
-
-<hr />
+>
+> **Important**: using your account password [won't be possible anymore from May 30, 2022](https://support.google.com/accounts/answer/6010255).
+>
+> "*To help keep your account secure, starting May 30, 2022, ​​Google will no longer support the use of third-party apps or devices which ask you to sign in to your Google Account using only your username and password.*"
+>
+> &#x2714; If you authorized your Gmail account with the quick setup wizard or manually with an app password, your Gmail account will keep being synchronized after May 30, 2022.
+>
+> &#x274C; If you enabled *Less secure apps* in the Google account settings and authorized your Gmail account manually with your normal account password, your Gmail account can't be synchronized from May 30, 2022 anymore.
+>
+> How to check:
+>
+> * Go to the *Settings* via the navigation menu (left side menu)
+> * Tap on *Manual setup and account options*
+> * Tap on *Accounts*
+> * Find the account in the list
+> * If there is a shield icon before the account name (=OAuth), the account will keep working
+>
+> How to fix:
+>
+> * Go to the *Settings* via the navigation menu (left side menu)
+> * Tap on the *Wizard* button and select *Gmail (OAuth)*
+> * Tick the checkbox to authenticate an existing account (else you'll create a new account!)
+> * Fill in the fields and follow the steps
+> * Repeat for each Gmail account
+>
+> Alternatively, you can use an app password, please see below.
+>
 
 If you use the Play store or GitHub version of FairEmail,
 you can use the quick setup wizard to easily setup a Gmail account and identity.
@@ -630,9 +643,17 @@ Please [see here](#user-content-howto) about how you can delete the account conf
 
 <br />
 
+<a name="faq6-app"></a>
+
 *App specific password*
 
 See [here](https://support.google.com/accounts/answer/185833) about how to generate an app specific password.
+
+To configure a new Gmail account with an app password, please tap on the wizard button in the main settings screen
+and select *Other provider* (not Gmail!) and follow the steps (paste the app password in the password field).
+
+To configure an existing Gmail account with an app password, please tap on *Manual setup and account options* in the main settings screen,
+tap on *Accounts*, tap on the account and tap on the pencil icon after the password and select *Switch to password authentication* and paste the app password.
 
 <br />
 
@@ -1267,6 +1288,9 @@ can likely be solved by changing the advanced identity setting *Use local IP add
 The error *... Couldn't connect to host ...* means that there was no response from the email server within a reasonable time (20 seconds by default).
 Mostly this indicates internet connectivity issues, possibly caused by a VPN or by a firewall app.
 You can try to increase the connection timeout in the connection settings of FairEmail, for when the email server is really slow.
+Some devices have a firewall, which you can access like this:
+
+*Settings, Data usage, Three-dots overflow menu, Data usage control*
 
 The error *... Connection refused ...* means that the email server
 or something between the email server and the app, like a firewall, actively refused the connection.
@@ -2456,6 +2480,7 @@ You can enable downloading message headers in the connection settings and check 
 Some common header conditions (regex):
 
 * *.&ast;Auto-Submitted:.&ast;* [RFC3834](https://tools.ietf.org/html/rfc3834)
+* *.&ast;List-Unsubscribe:.&ast;* [RFC3834](https://datatracker.ietf.org/doc/html/rfc2369)
 * *.&ast;Content-Type: multipart/report.&ast;* [RFC3462](https://tools.ietf.org/html/rfc3462)
 
 To match *set* IMAP flags (keywords) via a header condition (since version 1.1777):
@@ -2485,6 +2510,7 @@ $$blocklist$
 $$replydomain$
 $$nofrom$ (since version 1.1791)
 $$multifrom$ (since version 1.1791)
+$$automatic$ (since version 1.1862)
 ```
 
 Note that *regex* should be disable and that there should be no white space.
@@ -3248,6 +3274,13 @@ are not available, for example when using a non Play store version of the app, o
 
 OAuth is not supported for third party builds like the F-Droid build, please [see here](#user-content-faq147) about why not.
 
+Since version 1.1859 there is support for custom OAuth.
+To use custom OAuth, an XML file containing the server and OAuth data, like the client secret, should be created and imported.
+Please [see here](https://github.com/M66B/FairEmail/blob/master/app/src/main/res/xml/providers.xml) about how the XML file should look like.
+The XML file can be imported via a button in the debug panel of the miscellaneous settings of the app.
+To show the debug panel, debug mode mode should temporarily be enabled.
+After importing, you can use the quick setup wizard to configure an account.
+
 <br />
 
 <a name="faq112"></a>
@@ -3266,7 +3299,7 @@ Please see these websites for lists of privacy oriented email providers with adv
 * [Privacy Guides](https://privacyguides.org/providers/email/)
 * [Privacy Tools](https://www.privacytools.io/providers/email/)
 
-**Important**: Some providers, like ProtonMail, Tutanota, use proprietary email protocols, which make it impossible to use third party email apps.
+**Important**: Some providers, like ProtonMail, Tutanota and CTemplar, use proprietary email protocols, which make it impossible to use third party email apps.
 Please see [this FAQ](#user-content-faq129) for more information.
 
 Using your own (custom) domain name, which is supported by most email providers, will make it easier to switch to another email provider.
@@ -3448,10 +3481,11 @@ FairEmail will retry one time after waiting 8 seconds while keeping the device a
 If this fails, FairEmail will schedule an alarm to retry after 5, 15, 30 and eventually every 60 minutes and let the device sleep (=no battery usage).
 
 By temporarily enabling debug mode in the miscellaneous settings, you can disable this logarithmic back-off scheme (since version 1.1855).
-This will result in using a linear back-off scheme, which means that after each successive failure the waiting time will be increased by 1 minute up to 60 minutes.
+This will result in using a linear back-off scheme, which means that after each successive failure the waiting time will be
+increased by 1 minute the first 5 minutes and thereafter by 5 minutes up to 60 minutes.
 
 Note that [Android doze mode](https://developer.android.com/training/monitoring-device-state/doze-standby)
-does not allow to wake the device earlier than after 15 minutes when doze mode is enabled.
+does not allow to wake the device earlier than after 15 minutes when doze mode is active.
 
 *Force sync* in the three-dots menu of the unified inbox can be used to let FairEmail attempt to reconnect without waiting.
 
@@ -3592,17 +3626,20 @@ You can reset asked questions via the three dots overflow menu in the miscellane
 <br />
 
 <a name="faq129"></a>
-**(129) Are ProtonMail, Tutanota supported?**
+**(129) Are ProtonMail, Tutanota, CTemplar supported?**
 
 &#x1F30E; [Google Translate](https://translate.google.com/translate?sl=en&u=https://github.com/M66B/FairEmail/blob/master/FAQ.md%23user-content-faq129)
 
-ProtonMail uses a proprietary email protocol
+**ProtonMail** uses a proprietary email protocol
 and [does not directly support IMAP](https://protonmail.com/support/knowledge-base/imap-smtp-and-pop3-setup/),
-so you cannot use FairEmail to access ProtonMail.
+so you cannot use FairEmail or any other Android email client to access ProtonMail.
 
-Tutanota uses a proprietary email protocol
+**Tutanota** uses a proprietary email protocol
 and [does not support IMAP](https://tutanota.com/faq/#imap),
-so you cannot use FairEmail to access Tutanota.
+so you cannot use FairEmail or any other email client to access Tutanota.
+
+**CTemplar** [does not support IMAP](https://ctemplar.com/help/answer/do-you-offer-imap-2/) yet,
+so you cannot use FairEmail or any other email client to access CTemplar.
 
 <br />
 
@@ -4356,10 +4393,12 @@ Deleting messages from the server and restoring them later could result in losin
 
 &#x1F30E; [Google Translate](https://translate.google.com/translate?sl=en&u=https://github.com/M66B/FairEmail/blob/master/FAQ.md%23user-content-faq167)
 
+DeepL offers free translation of 500,000 characters (~100,000 words; ~250 pages) every month.
+
 1. Make sure you have the latest version of the app installed
 1. Check if [DeepL](https://www.deepl.com/) supports your language
 1. Enable DeepL support in the miscellaneous settings
-1. [Subscribe to](https://www.deepl.com/pro#developer) the DeepL API Free or Pro plan (credit card required)
+1. [Subscribe to](https://www.deepl.com/pro#developer) the DeepL API Free or Pro plan (credit card required; won't be charged)
 1. [Copy](https://www.deepl.com/pro-account/plan) the authentication key
 1. In the message composer tap on the translate button (文A) in the top action bar, select *Configure* and paste the key
 
@@ -4548,6 +4587,8 @@ but unfortunately modifications by manufacturers often [require it anyway](https
 <a name="faq176"></a>
 **(176) When will a message be considered safely transported?**
 
+&#x1F30E; [Google Translate](https://translate.google.com/translate?sl=en&u=https://github.com/M66B/FairEmail/blob/master/FAQ.md%23user-content-faq176)
+
 If the receive option *Check transport layer security (TLS)* is enabled,
 a green shield will be shown only if a message was transported securely by all servers.
 
@@ -4582,6 +4623,8 @@ Received: brown.elm.relay.mailchannels.net (brown.elm.relay.mailchannels.net. [2
 <a name="faq177"></a>
 **(177) What does 'Sensitivity' mean?**
 
+&#x1F30E; [Google Translate](https://translate.google.com/translate?sl=en&u=https://github.com/M66B/FairEmail/blob/master/FAQ.md%23user-content-faq177)
+
 The sensitivity of a message indicates the confidentiality of a message.
 
 * Personal: for you only
@@ -4597,10 +4640,32 @@ The sensitivity indication is sent as [a message header](https://datatracker.iet
 <a name="faq178"></a>
 **(178) Why are widgets not updating?**
 
+&#x1F30E; [Google Translate](https://translate.google.com/translate?sl=en&u=https://github.com/M66B/FairEmail/blob/master/FAQ.md%23user-content-faq178)
+
 Apps provide the layout and data for widgets on demand, but the homescreen app/launcher manages all widgets, with a little help from Android.
 
 If widgets are not being updated, this is often caused by missing permission.
 Please see [this video](https://www.youtube.com/watch?v=ywQrYJ6rtnM) about how to fix this.
+
+<br />
+
+<a name="faq179"></a>
+**(179) What are reply templates?**
+
+&#x1F30E; [Google Translate](https://translate.google.com/translate?sl=en&u=https://github.com/M66B/FairEmail/blob/master/FAQ.md%23user-content-faq179)
+
+Reply templates are predefined answer texts. They can be defined via the main navigation menu (left side menu).
+
+You can reply with a template, insert a template via the three-dots overflow menu in the message editor,
+and long press on an open space to insert a snippet (the latter requires Android 6 Marshmallow or later).
+
+Templates can have the following options:
+
+* *Default*: standard template to use when writing a new message
+* *Use as read receipt*: template to use instead of the default read receipt text
+* *Favorite*: template will be added in the main reply popup menu
+* *Snippet*: template will be used as text fragment (since version 1.1857)
+* *Hide from menus*: template will be hidden (disabled)
 
 <br />
 

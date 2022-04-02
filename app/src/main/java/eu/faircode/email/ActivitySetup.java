@@ -21,7 +21,6 @@ package eu.faircode.email;
 
 import static eu.faircode.email.ServiceAuthenticator.AUTH_TYPE_GMAIL;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
@@ -134,8 +133,8 @@ public class ActivitySetup extends ActivityBase implements FragmentManager.OnBac
     private static final int KEY_ITERATIONS = 65536;
     private static final int KEY_LENGTH = 256;
 
-    static final int REQUEST_PERMISSION = 1;
-    static final int REQUEST_SOUND = 2;
+    static final int REQUEST_SOUND_INBOUND = 1;
+    static final int REQUEST_SOUND_OUTBOUND = 2;
     static final int REQUEST_EXPORT = 3;
     static final int REQUEST_IMPORT = 4;
     static final int REQUEST_CHOOSE_ACCOUNT = 5;
@@ -144,6 +143,7 @@ public class ActivitySetup extends ActivityBase implements FragmentManager.OnBac
     static final int REQUEST_OAUTH = 8;
     static final int REQUEST_STILL = 9;
     static final int REQUEST_DELETE_ACCOUNT = 10;
+    static final int REQUEST_IMPORT_PROVIDERS = 11;
 
     static final int PI_MISC = 1;
 
@@ -464,6 +464,10 @@ public class ActivitySetup extends ActivityBase implements FragmentManager.OnBac
                     if (resultCode == RESULT_OK && data != null)
                         handleImportCertificate(data);
                     break;
+                case REQUEST_IMPORT_PROVIDERS:
+                    if (resultCode == RESULT_OK && data != null)
+                        handleImportProviders(data);
+                    break;
             }
         } catch (Throwable ex) {
             Log.e(ex);
@@ -728,6 +732,8 @@ public class ActivitySetup extends ActivityBase implements FragmentManager.OnBac
                 DocumentFile file = DocumentFile.fromSingleUri(context, uri);
                 try (OutputStream raw = resolver.openOutputStream(uri)) {
                     Log.i("Writing URI=" + uri + " name=" + file.getName() + " virtual=" + file.isVirtual());
+                    if (raw == null)
+                        throw new FileNotFoundException(uri.toString());
 
                     if (TextUtils.isEmpty(password))
                         raw.write(jexport.toString(2).getBytes());
@@ -848,20 +854,15 @@ public class ActivitySetup extends ActivityBase implements FragmentManager.OnBac
                         " answers=" + import_answers +
                         " settings=" + import_settings);
 
-                if (uri == null)
-                    throw new FileNotFoundException();
-
-                if (!"content".equals(uri.getScheme()) &&
-                        !Helper.hasPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    Log.w("Import uri=" + uri);
-                    throw new IllegalArgumentException(context.getString(R.string.title_no_stream));
-                }
+                NoStreamException.check(uri, context);
 
                 StringBuilder data = new StringBuilder();
                 Log.i("Reading URI=" + uri);
                 ContentResolver resolver = context.getContentResolver();
-                try (InputStream raw = new BufferedInputStream(resolver.openInputStream(uri))) {
-
+                InputStream is = resolver.openInputStream(uri);
+                if (is == null)
+                    throw new FileNotFoundException(uri.toString());
+                try (InputStream raw = new BufferedInputStream(is)) {
                     InputStream in;
                     if (TextUtils.isEmpty(password))
                         in = raw;
@@ -1256,18 +1257,22 @@ public class ActivitySetup extends ActivityBase implements FragmentManager.OnBac
 
             @Override
             protected void onException(Bundle args, Throwable ex) {
-                SpannableStringBuilder ssb = new SpannableStringBuilder();
-                if (ex.getCause() instanceof BadPaddingException)
-                    ssb.append(getString(R.string.title_setup_password_invalid));
-                else if (ex instanceof IOException && ex.getCause() instanceof IllegalBlockSizeException)
-                    ssb.append(getString(R.string.title_setup_import_invalid));
-                if (ssb.length() > 0) {
-                    ssb.setSpan(new StyleSpan(Typeface.BOLD), 0, ssb.length(), 0);
-                    ssb.setSpan(new ForegroundColorSpan(colorWarning), 0, ssb.length(), 0);
-                    ssb.append("\n\n");
+                if (ex instanceof NoStreamException)
+                    ((NoStreamException) ex).report(ActivitySetup.this);
+                else {
+                    SpannableStringBuilder ssb = new SpannableStringBuilder();
+                    if (ex.getCause() instanceof BadPaddingException)
+                        ssb.append(getString(R.string.title_setup_password_invalid));
+                    else if (ex instanceof IOException && ex.getCause() instanceof IllegalBlockSizeException)
+                        ssb.append(getString(R.string.title_setup_import_invalid));
+                    if (ssb.length() > 0) {
+                        ssb.setSpan(new StyleSpan(Typeface.BOLD), 0, ssb.length(), 0);
+                        ssb.setSpan(new ForegroundColorSpan(colorWarning), 0, ssb.length(), 0);
+                        ssb.append("\n\n");
+                    }
+                    ssb.append(ex.toString());
+                    onProgress(ssb, null);
                 }
-                ssb.append(ex.toString());
-                onProgress(ssb, null);
             }
         }.execute(this, args, "setup:import");
     }
@@ -1283,10 +1288,13 @@ public class ActivitySetup extends ActivityBase implements FragmentManager.OnBac
 
                 DB db = DB.getInstance(context);
                 ContentResolver resolver = context.getContentResolver();
-                try (InputStream is = new BufferedInputStream(resolver.openInputStream(uri))) {
+                InputStream is = resolver.openInputStream(uri);
+                if (is == null)
+                    throw new FileNotFoundException(uri.toString());
+                try (InputStream bis = new BufferedInputStream(is)) {
                     XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                     XmlPullParser xml = factory.newPullParser();
-                    xml.setInput(new InputStreamReader(is));
+                    xml.setInput(new InputStreamReader(bis));
 
                     EntityAccount account = null;
                     EntityIdentity identity = null;
@@ -1503,6 +1511,9 @@ public class ActivitySetup extends ActivityBase implements FragmentManager.OnBac
                     X509Certificate cert;
                     CertificateFactory fact = CertificateFactory.getInstance("X.509");
                     try (InputStream is = context.getContentResolver().openInputStream(uri)) {
+                        if (is == null)
+                            throw new FileNotFoundException(uri.toString());
+
                         if (der)
                             cert = (X509Certificate) fact.generateCertificate(is);
                         else {
@@ -1548,9 +1559,42 @@ public class ActivitySetup extends ActivityBase implements FragmentManager.OnBac
         }
     }
 
+    private void handleImportProviders(Intent data) {
+        Bundle args = new Bundle();
+        args.putParcelable("uri", data.getData());
+
+        new SimpleTask<Void>() {
+            @Override
+            protected Void onExecute(Context context, Bundle args) throws Throwable {
+                Uri uri = args.getParcelable("uri");
+
+                Log.i("Reading URI=" + uri);
+                ContentResolver resolver = context.getContentResolver();
+                InputStream is = resolver.openInputStream(uri);
+                if (is == null)
+                    throw new FileNotFoundException(uri.toString());
+                EmailProvider.importProfiles(is, context);
+
+                return null;
+            }
+
+            @Override
+            protected void onExecuted(Bundle args, Void data) {
+                ToastEx.makeText(ActivitySetup.this, R.string.title_completed, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            protected void onException(Bundle args, Throwable ex) {
+                Log.unexpectedError(getSupportFragmentManager(), ex);
+            }
+        }.execute(this, args, "import:providers");
+    }
+
     private void onGmail(Intent intent) {
+        FragmentGmail fragment = new FragmentGmail();
+        fragment.setArguments(intent.getExtras());
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.content_frame, new FragmentGmail()).addToBackStack("quick");
+        fragmentTransaction.replace(R.id.content_frame, fragment).addToBackStack("quick");
         fragmentTransaction.commit();
     }
 
@@ -1563,8 +1607,10 @@ public class ActivitySetup extends ActivityBase implements FragmentManager.OnBac
     }
 
     private void onQuickSetup(Intent intent) {
+        FragmentQuickSetup fragment = new FragmentQuickSetup();
+        fragment.setArguments(new Bundle());
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.content_frame, new FragmentQuickSetup()).addToBackStack("quick");
+        fragmentTransaction.replace(R.id.content_frame, fragment).addToBackStack("quick");
         fragmentTransaction.commit();
     }
 
@@ -1616,8 +1662,15 @@ public class ActivitySetup extends ActivityBase implements FragmentManager.OnBac
     }
 
     private void onManageLocalContacts(Intent intent) {
+        Bundle args = new Bundle();
+        // All accounts
+        args.putBoolean("junk", intent.getBooleanExtra("junk", false));
+
+        FragmentContacts fragment = new FragmentContacts();
+        fragment.setArguments(args);
+
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.content_frame, new FragmentContacts()).addToBackStack("contacts");
+        fragmentTransaction.replace(R.id.content_frame, fragment).addToBackStack("contacts");
         fragmentTransaction.commit();
     }
 

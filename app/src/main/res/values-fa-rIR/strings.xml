@@ -74,10 +74,14 @@
     </plurals>
     <string name="title_ask_spam_who">برخورد با پیام از طرف %1$s به‌عنوان هرزنامه؟</string>
     <string name="title_junk_hint">فراهم‌کننده شما مسئول پالایش هرزنامه است. برنامه ایمیل داده لازم برای قابل اطمینان بودن این کار را ندارد.</string>
+    <string name="title_junk_pop_hint">        پیام‌های ارسالی از سوی فرستندگان مسدود شده دانلود نخواهد شد.
+        اگر \"پیام‌ها را روی سرور نگه دار\" فعال نباشد، این پیام‌ها برای همیشه از دست خواهند رفت!
+    </string>
     <string name="title_block">%s مسدود شود</string>
     <string name="title_block_sender">مسدود کردن فرستنده</string>
     <string name="title_block_sender_domain">دامنه %1$s را مسدود کن</string>
     <string name="title_block_sender_hint">مسدود کردن فرستنده یک ویژگی رایگان است.        مسدود کردن دامنه فرستنده از قوانین فیلتر استفاده می کند ، که یک ویژگی حرفه ای است.</string>
+    <string name="title_blocked_senders">فرستندگان مسدود شده</string>
     <string name="title_junk_filter">از فیلتر هرزنامه محلی استفاده کنید</string>
     <string name="title_junk_filter_hint">این می تواند استفاده از باتری را افزایش دهد و پیام ها را به صورت نادرست به عنوان اسپم علامت گذاری کند</string>
     <string name="title_junk_blocklist">از فهرست‌های انسداد هرزنامه استفاده کن</string>
@@ -150,7 +154,7 @@
     <string name="title_setup_gmail_drafts">اگر پوشه پیش‌نویس‌ها به‌وسیله IMAP قابل دسترسی نیست، می‌توان آن را در تنظیمات برچسب‌های جیمیل درست کرد</string>
     <string name="title_setup_office_auth">خطای \'AUTHENTICATE failed\' می‌تواند به‌دلیل غیرفعال بودن IMAP/SMTP به‌ دست مدیر سیستم باشد</string>
     <string name="title_setup_oauth_rationale">برای دسترسی به %1$s حسابتان اجازه دهید</string>
-    <string name="title_setup_oauth_update">تایید دوباره هویت حساب موجود</string>
+    <string name="title_setup_oauth_update">به یک حساب موجود اجازه بدهید (در غیر این صورت یک حساب جدید بسازید)</string>
     <string name="title_setup_oauth_updated">تایید هویت حساب به روز شد</string>
     <string name="title_setup_oauth_authorize">اجازه دهید</string>
     <string name="title_setup_select_account">انتخاب حساب</string>
@@ -171,7 +175,7 @@
     <string name="title_setup_permissions_explanation">اجازه دسترسی به لیست مخاطبین برای جستجوی اطلاعات آنها و پیشنهاد دادن‌شان لازم است</string>
     <string name="title_setup_permission_import_contacts">چگونه می‌توانم مخاطبین را وارد کنم؟</string>
     <string name="title_setup_doze">غیرفعال کردن بهینه سازی باتری</string>
-    <string name="title_setup_doze_remark">برای فرستادن و دریافت مطمئن ایمیل</string>
+    <string name="title_setup_doze_remark">برای فرستادن و دریافت ایمیل به طرز مطمئن در پس‌زمینه</string>
     <string name="title_setup_doze_battery">آیا مصرف باتری زیاد است؟</string>
     <string name="title_setup_doze_stopped">همگام‌سازی متوقف شده؟</string>
     <string name="title_setup_doze_device">این مورد احتمالا برای این دستگاه اجباریست</string>
@@ -245,6 +249,9 @@
     <string name="title_setup_reset_general">پرسش‌های عمومی</string>
     <string name="title_setup_reset_full">مشاهده پیام‌های اصلی</string>
     <string name="title_setup_reset_images">نمایش تصاویر</string>
+    <string name="title_setup_reset_links">لینک‌ها را تایید کنید</string>
+    <string name="title_check_gmail_oauth">حساب‌های جیمیل شما پس از ۳۰ می ۲۰۲۲، همچنان کار خواهند کرد</string>
+    <string name="title_check_gmail_password">تعدادی از حساب‌های جیمیل شما پس از ۳۰ می ۲۰۲۲، ممکن است از کار بیافتند</string>
     <string name="title_advanced_hint_title">گزینه‌های پیشرفته بیشتر</string>
     <string name="title_advanced_hint_message">        You are navigating to the more advanced options.        All options have commonly used standard values, which you do not need to change unless you have a different preference.
     </string>
@@ -276,6 +283,7 @@
     <string name="title_advanced_sync_folders_poll">هم‌رسانی فعالانه فهرست پوشه‌ها</string>
     <string name="title_advanced_sync_shared_folders">فهرست‌های پوشه‌های همرسانی شده را همگام‌سازی کن</string>
     <string name="title_advanced_subscriptions">مدیریت اشتراکات پوشه</string>
+    <string name="title_advanced_check_authentication">اصالت پیام را بررسی کنید</string>
     <string name="title_advanced_check_mx">نشانی‌های ایمیل فرستنده را هنگام همگام‌سازی پیام‌ها بررسی کن</string>
     <string name="title_advanced_tune_keep_alive">وقفه زنده-نگه‌داشتن را خودکار کوک کن</string>
     <string name="title_advanced_keyboard">نمایش صفحه کلید به‌صورت پیش‌فرض</string>
@@ -324,6 +332,7 @@
     <string name="title_advanced_min_screen_size">کمترین اندازه صفحه برای تقسیم کردن صفحه</string>
     <string name="title_advanced_column_width">پهنای ستون پیام: %1$s %%</string>
     <string name="title_advanced_nav_options">نشان دادن گزینه‌های منوی ناوبری</string>
+    <string name="title_advanced_nav_categories">دسته‌بندی‌های حساب را در منوی ناوبری نمایش بده</string>
     <string name="title_advanced_nav_pin">سنجاق کردن منوی ناوبری</string>
     <string name="title_advanced_nav_hide_title">پنهان کردن گزینه‌های منوی ناوبری؟</string>
     <string name="title_advanced_nav_hide_message">شما می‌توانید مجددا گزینه‌ها را در تنظیمات نمایش فعال کنید</string>
@@ -365,6 +374,7 @@
     <string name="title_advanced_preview_italic">پیش‌نمایش پیام را به‌صورت ایتالیک نمایش بده</string>
     <string name="title_advanced_preview_lines">شمار خط‌های پیش‌نمایش</string>
     <string name="title_advanced_addresses">نمایش جزئیات آدرس به صورت پیش‌فرض</string>
+    <string name="title_advanced_unzip">محتویات ضمیمه‌های فشرده‌ شده را نشان بده</string>
     <string name="title_advanced_attachments_alt">نمایش پیوست‌ها بعد از متن پیام</string>
     <string name="title_advanced_contrast">از کنتراست زیاد برای متن پیام استفاده کن</string>
     <string name="title_advanced_background_color">استفاده از رنگ‌های پس‌زمینه</string>
@@ -449,6 +459,7 @@
     <string name="title_advanced_manage_keys_hint">        This will open to the Android security settings.        Keys and certificates can generally be found under Advanced - Encryption and credentials.
     </string>
     <string name="title_advanced_external_search">اجازه به دیگر برنامه‌ها برای جستجو در پیام‌ها</string>
+    <string name="title_advanced_sort_answers">قالب‌های پاسخ‌گویی را بر اساس تناوب استفاده از آنها مرتب کن</string>
     <string name="title_advanced_shortcuts">نمایش مخاطبین مکررا استفاده شده در فهرست اشتراک‌گذاری اندروید</string>
     <string name="title_advanced_fts">ساخت شاخص جستجو</string>
     <string name="title_advanced_fts_indexed">%1$d / %2$d پیام ایندکس شد (%3$s)</string>
@@ -474,6 +485,7 @@
     <string name="title_advanced_threading_hint">پیام‌های گروهی مرتبط با یکدیگر</string>
     <string name="title_advanced_gravatars_hint">شاید خطر حریم خصوصی وجود داشته باشد</string>
     <string name="title_advanced_preview_hint">فقط زمانی در دسترس است که متن پیام دانلود شده باشد</string>
+    <string name="compressed">محتویات فایل‌های فشرده شده (%1$s) با بیش از %2$s فایل یا فایل‌های بزرگ‌تر از %3$s نمایش داده نخواهند شد</string>
     <string name="title_advanced_autoexpand_hint">باز کردن خودکار پیام وقتی فقط یک پیام یا فقط یک پیام خوانده نشده در مکالمه وجود دارد</string>
     <string name="title_advanced_autoclose_hint">بسته شدن خودکار مکالمات زمانی که همه پیام‌ها آرشیو شده، فرستاده شده و یا به به سطل آشغال فرستاده شده است</string>
     <string name="title_advanced_sender_hint">بیشتر فراهم‌کنندگان نشانی‌های ویرایش شده فرستنده را قبول نمی‌کنند</string>
@@ -573,11 +585,14 @@
     <string name="title_delete_channel">حذف کانال اعلان</string>
     <string name="title_insert_contact">افزودن مخاطب</string>
     <string name="title_edit_contact">ویرایش مخاطب</string>
+    <string name="title_contact_email">ایمیل</string>
+    <string name="title_contact_name">نام</string>
+    <string name="title_contact_group">گروه</string>
     <string name="title_create_sub_folder">ساخت زیرپوشه</string>
     <string name="title_empty_trash_ask">پیام‌های سطل آشغال برای همیشه پاک شوند?</string>
     <string name="title_empty_spam_ask">پیام‌های هرزنامه برای همیشه پاک شوند؟</string>
     <string name="title_empty_spam_all_ask">همه پیام‌های هرزنامه از همه حساب‌ها برای همیشه حذف شود؟</string>
-    <string name="title_delete_contacts">حذف همه مخاطبین محلی؟</string>
+    <string name="title_delete_contacts">حذف مخاطبین محلی مرئی؟</string>
     <string name="title_no_operations">عملیاتی در انتظار وجود ندارد </string>
     <string name="title_hint_operations">عملیات‌های حذف می‌تواند موجب ناپدید شدن پیام‌ها و مشکلات همگام‌سازی شود</string>
     <string name="title_folder_name">نام پوشه</string>
@@ -660,6 +675,7 @@
     <string name="title_download_all">دانلود همه</string>
     <string name="title_save_all">ذخیره همه</string>
     <string name="title_save_eml">ذخیره پرونده خام پیام</string>
+    <string name="title_auto_confirm" comment="title_auto_confirm&#10;Option title for checkbox to auto close (confirm) dialogs.">پس از چند ثانیه به طور خودکار تایید کن</string>
     <string name="title_trash">سطل آشغال</string>
     <string name="title_copy">کپی &#8230;</string>
     <string name="title_copy_to">کپی به &#8230;</string>
@@ -694,7 +710,8 @@
     <string name="title_no_recorder">برنامه ضبط صدا سازگاری در دسترس نیست</string>
     <string name="title_no_camera">برنامه دوربین سازگاری در دسترس نیست</string>
     <string name="title_no_saf">چارچوب دسترسی ذخیره سازی موجود نیست</string>
-    <string name="title_no_stream">یک برنامه منسوخ مسیر پرونده را به جای جریان پرونده ارسال کرده</string>
+    <string name="title_no_stream">FairEmail اجازه خواندن این فایل را به طور مستقیم ندارد</string>
+    <string name="title_no_stream_help">با انتخاب فایل به وسیله یک برنامه مدیریت فایل به‌روزتر یا با دادن اجازه دسترسی برای خوانش فایل‌ها، این مشکل می‌تواند حل شود</string>
     <string name="title_no_internet">اینترنت یا اتصال سازگاری در دسترس نیست</string>
     <string name="title_no_connection">در حال اتصال به یک یا چند حساب &#8230;</string>
     <string name="title_no_folder">پوشه وجود ندارد</string>
@@ -709,6 +726,7 @@
     <string name="title_ask_delete">پیام به صورت همیشگی حذف شود؟</string>
     <string name="title_ask_delete_answer">الگوی پاسخ به صورت همیشگی حذف شود؟</string>
     <string name="title_ask_delete_rule">دستور به صورت همیشگی حذف شود؟</string>
+    <string name="title_ask_delete_attachments">حذف همه پیوست‌ها؟</string>
     <string name="title_ask_discard">پیش‌نویس‌ کنار گذاشته شود؟</string>
     <string name="title_ask_show_html">نمایش پیام اصلی می تواند موجب نشت اطلاعات حساس شود</string>
     <string name="title_ask_show_image">نمایش تصاویر می تواند موجب نشت اطلاعات حساس شود</string>
@@ -846,6 +864,7 @@
     <string name="title_search_with_size">اندازه پیام بزرگ‌تر از</string>
     <string name="title_search_with_before">قبل از</string>
     <string name="title_search_with_after">بعد از</string>
+    <string name="title_search_device_first">ابتدا روی دستگاه جستجو کن</string>
     <string name="title_search_flag_unseen">خوانده نشده</string>
     <string name="title_search_flag_flagged">ستاره دار</string>
     <string name="title_search_flag_hidden">پنهان</string>
@@ -856,6 +875,7 @@
     <string name="title_search_device">جستجو بر روی دستگاه‌</string>
     <string name="title_search_server">جستجو بر روی سرور</string>
     <string name="title_search_in">جستجو در</string>
+    <string name="title_search_delete">جستجوی ذخیره شده پاک شود؟</string>
     <string name="title_sort_on">مرتب‌سازی براساس</string>
     <string name="title_sort_on_time">زمان</string>
     <string name="title_sort_on_unread">خوانده نشده</string>
@@ -893,6 +913,7 @@
     <string name="title_answer_name">نام الگو</string>
     <string name="title_answer_standard">پیش‌فرض</string>
     <string name="title_answer_favorite">مورد پسند</string>
+    <string name="title_answer_snippet">Snippet</string>
     <string name="title_answer_hide">پنهان کردن از فهرست‌ها</string>
     <string name="title_answer_text">متن الگو</string>
     <string name="title_rule_noop">بدون کنش</string>
@@ -1320,5 +1341,11 @@
         <item>متوسط</item>
         <item>بزرگ</item>
         <item>خیلی بزرگ</item>
+    </string-array>
+    <string-array name="contactTypes">
+        <item>گیرنده</item>
+        <item>فرستنده</item>
+        <item>مسدود شده</item>
+        <item>مسدود نشده</item>
     </string-array>
 </resources>

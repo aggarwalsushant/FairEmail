@@ -96,11 +96,9 @@ public class FragmentGmail extends FragmentBase {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
-        if (args != null) {
-            personal = args.getString("personal");
-            address = args.getString("address");
-            update = args.getBoolean("update");
-        }
+        personal = args.getString("personal");
+        address = args.getString("address");
+        update = args.getBoolean("update", true);
     }
 
     @Override
@@ -143,7 +141,7 @@ public class FragmentGmail extends FragmentBase {
             @Override
             public void onClick(View v) {
                 try {
-                    requestPermissions(Helper.getOAuthPermissions(), ActivitySetup.REQUEST_CHOOSE_ACCOUNT);
+                    requestPermissions(Helper.getOAuthPermissions(), REQUEST_PERMISSIONS);
                 } catch (Throwable ex) {
                     Log.unexpectedError(getParentFragmentManager(), ex);
                 }

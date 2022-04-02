@@ -124,7 +124,6 @@
     <string name="title_setup_gmail_password">Želim lozinkom odobriti račun</string>
     <string name="title_setup_office_auth">Greška \'AUTHENTICATE failed\' se može pojaviti ako je IMAP/SMTP isključen od strane administratora</string>
     <string name="title_setup_oauth_rationale">Autorizirajte pristup vašem %1$s računu</string>
-    <string name="title_setup_oauth_update">Ponovo odobri postoječi račun</string>
     <string name="title_setup_oauth_authorize">Autoriziraj</string>
     <string name="title_setup_select_account">Odaberi račun</string>
     <string name="title_setup_instructions">Upute za postavljanje</string>
@@ -468,12 +467,13 @@
     <string name="title_create_channel">Stvorite kanal obavijesti</string>
     <string name="title_edit_channel">Uredi kanal obavijesti</string>
     <string name="title_delete_channel">Izbriši kanal obavijesti</string>
+    <string name="title_contact_email">E-pošta</string>
+    <string name="title_contact_name">Ime</string>
     <string name="title_create_sub_folder">Stvori podmapu</string>
     <string name="title_empty_trash_ask">Želite li trajno izbrisati sve poruke u otpadu?</string>
     <string name="title_empty_spam_ask">Želite li trajno izbrisati sve poruke označene kao spam?</string>
     <string name="title_empty_trash_all_ask">Želite li trajno izbrisati sve poruke u otpadu svih računa?</string>
     <string name="title_empty_spam_all_ask">Trajno izbrisati sve neželjene poruke svih računa?</string>
-    <string name="title_delete_contacts">Želite li izbrisati sve lokalne kontakte?</string>
     <string name="title_no_operations">Nema operacija na čekanju</string>
     <string name="title_hint_operations">Brisanje operacija može rezultirati nestankom poruka i problemima sa sinkronizacijom</string>
     <string name="title_folder_name">Naziv mape</string>
@@ -579,7 +579,6 @@
     <string name="title_no_recorder">Nije dostupna odgovarajuća aplikacija audio snimača</string>
     <string name="title_no_camera">Nije dostupna odgovarajuća aplikacija za kameru</string>
     <string name="title_no_saf">Storage access framework nije dostupan</string>
-    <string name="title_no_stream">Zastarjela aplikacija poslala je put datoteke umjesto sadržaja datoteke</string>
     <string name="title_no_internet">Nema ili nema prikladne internetske veze</string>
     <string name="title_no_connection">Povezivanje s jednim ili više računa &#8230;</string>
     <string name="title_no_folder">Mapa ne postoji</string>
@@ -1159,5 +1158,11 @@
         <item>Srednje</item>
         <item>Veliko</item>
         <item>Extra veliko</item>
+    </string-array>
+    <string-array name="contactTypes">
+        <item>Primatelj</item>
+        <item>Pošiljatelj</item>
+        <item>Blokirano</item>
+        <item>Not blocked</item>
     </string-array>
 </resources>

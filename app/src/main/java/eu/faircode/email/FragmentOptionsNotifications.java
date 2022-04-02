@@ -45,6 +45,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -239,6 +240,7 @@ public class FragmentOptionsNotifications extends FragmentBase implements Shared
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     protected void onExecuted(Bundle args, Void data) {
                         NotificationHelper.clear(getContext());
+                        ToastEx.makeText(getContext(), R.string.title_completed, Toast.LENGTH_LONG).show();
                     }
 
                     @Override
@@ -412,7 +414,7 @@ public class FragmentOptionsNotifications extends FragmentBase implements Shared
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, sound == null ? null : Uri.parse(sound));
-                startActivityForResult(Helper.getChooser(getContext(), intent), ActivitySetup.REQUEST_SOUND);
+                startActivityForResult(Helper.getChooser(getContext(), intent), ActivitySetup.REQUEST_SOUND_INBOUND);
             }
         });
 
@@ -701,7 +703,7 @@ public class FragmentOptionsNotifications extends FragmentBase implements Shared
 
         try {
             switch (requestCode) {
-                case ActivitySetup.REQUEST_SOUND:
+                case ActivitySetup.REQUEST_SOUND_INBOUND:
                     if (resultCode == RESULT_OK && data != null)
                         onSelectSound(data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI));
                     break;

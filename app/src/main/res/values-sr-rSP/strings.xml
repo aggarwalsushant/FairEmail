@@ -390,10 +390,10 @@
     <string name="title_delete_channel">Избриши канал за обавештавање</string>
     <string name="title_insert_contact">Додај контакт</string>
     <string name="title_edit_contact">Измени контакт</string>
+    <string name="title_contact_name">Име</string>
     <string name="title_create_sub_folder">Направи подфасциклу</string>
     <string name="title_empty_trash_ask">Заувек обрисати све поруке из отпада?</string>
     <string name="title_empty_spam_ask">Обрисати све нежељене поруке заувек?</string>
-    <string name="title_delete_contacts">Обриши све локалне контакте?</string>
     <string name="title_no_operations">Нема операција на чекању</string>
     <string name="title_hint_operations">Операције брисања могу довести до порука које нестају и синхронизационих проблема</string>
     <string name="title_folder_name">Име фасцикле</string>
@@ -497,7 +497,6 @@
     <string name="title_receipt_text">Ова потврда о пријему само потврђује да је порука приказана. Нема гаранција да ли је прималац прочитао садржај поруке.</string>
     <string name="title_no_answers">Нема дефинисаних шаблона одговора</string>
     <string name="title_no_saf">Радни оквир приступа складишту није доступан</string>
-    <string name="title_no_stream">Застарела апликација је послала путању до фајла уместо фајл</string>
     <string name="title_no_internet">Нема везе или нема прикладне везе</string>
     <string name="title_no_connection">Повезивање на један или више налога&#8230;</string>
     <string name="title_no_folder">Фасцикла не постоји</string>
@@ -1057,5 +1056,11 @@
         <item>Средња</item>
         <item>Велика</item>
         <item>Веома велика</item>
+    </string-array>
+    <string-array name="contactTypes">
+        <item>Прималац</item>
+        <item>Пошиљаоцу</item>
+        <item>Блокирано</item>
+        <item>Not blocked</item>
     </string-array>
 </resources>

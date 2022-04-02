@@ -140,7 +140,6 @@
     <string name="title_setup_gmail_password">Ik wol in akkount autorisearje mei in wachtwurd</string>
     <string name="title_setup_office_auth">De flater \'AUTHENTICATE is mislearre\' kin wurde feroarsake troch IMAP / SMTP te wurden útskeakele troch de systeembehearder</string>
     <string name="title_setup_oauth_rationale">Autorisearje tagong ta jo %1$s akkount</string>
-    <string name="title_setup_oauth_update">Autorisearje besteand account opnij</string>
     <string name="title_setup_oauth_updated">Akkountautorisaasje is bywurke</string>
     <string name="title_setup_oauth_authorize">Autorisearje</string>
     <string name="title_setup_select_account">Selektearje akkount</string>
@@ -161,7 +160,6 @@
     <string name="title_setup_permissions">Subsydzje tagongsrjochten</string>
     <string name="title_setup_permissions_remark">Om tagong te krijen ta kontaktynformaasje (opsjoneel)</string>
     <string name="title_setup_doze">Batteryoptimalisaasje ûtskeakelje</string>
-    <string name="title_setup_doze_remark">Om betrouber email te ferstjoeren en te ûntfangen</string>
     <string name="title_setup_doze_hint">Hoewol dit miskien tsjinstridich klinkt, sil útskeakeljen fan batterijoptimalisaasjes foar dizze app resultearje yn minder batterijferbrûk</string>
     <string name="title_setup_doze_instructions">Yn it folgjende Android-dialooch feroarje \"Net optimisearre\" nei \"Alle apps\", selektearje dizze app en selektearje \"Net optimalisearje\"</string>
     <string name="title_setup_doze_battery">Hege batterij gebrûk?</string>
@@ -669,6 +667,8 @@
     <string name="title_delete_channel">Notifikaasjekanaal wiskje</string>
     <string name="title_insert_contact">Kontakt tafoegje</string>
     <string name="title_edit_contact">Kontakt bewurkje</string>
+    <string name="title_contact_email">Email</string>
+    <string name="title_contact_name">Namme</string>
     <string name="title_create_sub_folder">Submap oanmeitsje</string>
     <string name="title_empty_trash_ask">Alle jiskefetberjochten permanint wiskje?</string>
     <string name="title_empty_spam_ask">Alle spamberjochten permanint wiskje?</string>
@@ -682,7 +682,6 @@
     <string name="title_delete_operation_flag">Flagge operaasjes</string>
     <string name="title_delete_operation_delete">Bedriuwen wiskje</string>
     <string name="title_delete_operation_deleted">%1$d operaasjes wiske</string>
-    <string name="title_delete_contacts">Alle lokale kontakten wiskje?</string>
     <string name="title_no_operations">Gjin wachtsjende operaasjes</string>
     <string name="title_hint_operations">Wiskjen fan operaasjes kin resultearje yn ferdwine berjochten en syngronisaasjeproblemen</string>
     <string name="title_op_title_headers">Headers downloade</string>
@@ -821,7 +820,6 @@
     <string name="title_no_recorder">Gjin geskikte app foar audio-recorder beskikber</string>
     <string name="title_no_camera">Gjin geskikte kamera-app beskikber</string>
     <string name="title_no_saf">Ramt opslach tagong net beskikber</string>
-    <string name="title_no_stream">In ferâldere app stjoerde in bestânspaad ynstee fan in bestânsstream</string>
     <string name="title_no_internet">Gjin as gjin gaadlike ynternetferbining</string>
     <string name="title_no_connection">Ferbine mei ien of meardere akkounts &#8230;</string>
     <string name="title_no_folder">Map bestiet net</string>
@@ -1556,5 +1554,11 @@
         <item>Medium</item>
         <item>Grutte</item>
         <item>Ekstra grut</item>
+    </string-array>
+    <string-array name="contactTypes">
+        <item>Ûntfanger</item>
+        <item>Stjoerder</item>
+        <item>Blocked</item>
+        <item>Not blocked</item>
     </string-array>
 </resources>
